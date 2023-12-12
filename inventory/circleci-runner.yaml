@@ -1,0 +1,7 @@
+---
+cicd_runner:
+  hosts:
+    circle-01:
+      ansible_host: 100.92.96.62
+    circle-02:
+      ansible_host: 100.91.111.92

@@ -1,0 +1,5 @@
+---
+- name: Restart circleci-runner
+  ansible.builtin.service:
+    name: circleci-runner
+    state: restarted

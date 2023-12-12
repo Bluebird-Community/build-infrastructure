@@ -1,0 +1,6 @@
+---
+- name: CI/CD-Runner
+  hosts: cicd_runner
+  become: true
+  roles:
+    - circleci-runner
