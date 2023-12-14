@@ -1,5 +1,5 @@
 ---
-- name: "Install CircleCI runner dependencies"
+- name: Install CircleCI runner dependencies
   ansible.builtin.apt:
     pkg:
       - apt-transport-https
@@ -12,7 +12,7 @@
     - circleci-runner
     - dependencies
 
-- name: "Add CircleCI key to a keyring file"
+- name: Add CircleCI key to a keyring file
   ansible.builtin.apt_key:
     url: "{{ repository_key_url }}"
     keyring: "{{ repository_keyring_file }}"
@@ -20,7 +20,7 @@
     - circleci-runner
     - repository
 
-- name: "Install CircleCI repository"
+- name: Install CircleCI repository
   ansible.builtin.apt_repository:
     repo: "deb [signed-by={{ repository_keyring_file }}] {{ repository_url }} any main"
     state: present
@@ -29,20 +29,40 @@
     - circleci-runner
     - repository
 
-- name: "Install CircleCI runner dependencies"
+- name: Install CircleCI runner dependencies
   ansible.builtin.apt:
     pkg:
       - circleci-runner
+  tags:
+    - circleci-runner
 
-- name: "Configure CircleCI runner"
+- name: Configure CircleCI runner
   ansible.builtin.template:
     src: circleci-runner-config.yaml.j2
     dest: "{{ circleci_config_path }}"
-    mode: 0640
+    mode: "0640"
     owner: circleci
+  notify:
+    - Restart circleci-runner
+  tags:
+    - circleci-runner
 
-- name: "Enable and start circleci-runner systemd unit"
+- name: Create CircleCI runner working directory
+  ansible.builtin.file:
+    path: "{{ runner.working_directory }}"
+    state: directory
+    owner: circleci
+    group: circleci
+    mode: "0750"
+  notify:
+    - Restart circleci-runner
+  tags:
+    - circleci-runner
+
+- name: Enable and start circleci-runner systemd unit
   ansible.builtin.service:
     name: circleci-runner.service
     state: started
     enabled: true
+  tags:
+    - circleci-runner

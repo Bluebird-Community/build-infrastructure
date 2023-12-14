@@ -1,0 +1,10 @@
+daemonize: true
+interface: {{ monitoring_pmacctd_interface }}
+aggregate: src_host, src_port, dst_host, dst_port, in_iface, out_iface, timestamp_start, timestamp_end, proto, tos, tcpflags
+plugins: nfprobe[{{ monitoring_pmacctd_interface }}]
+nfprobe_receiver: {{ monitoring_pmacctd_collector_ip }}:{{ monitoring_pmacctd_collector_port }}
+nfprobe_version: {{ monitoring_pmacctd_version }}
+nfprobe_direction[{{ monitoring_pmacctd_interface }}]: tag
+nfprobe_ifindex[{{ monitoring_pmacctd_interface }}]: tag2
+pre_tag_map: /etc/pmacct/pretag.map
+timestamps_secs: true

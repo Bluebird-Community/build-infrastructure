@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+
+# Process Monitoring
+
+{% for process in monitoring_snmpd_procs %}
+proc {{ process }}
+{% endfor %}

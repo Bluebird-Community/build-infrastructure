@@ -4,3 +4,5 @@
   become: true
   roles:
     - circleci-runner
+    - prometheus.prometheus.node_exporter
+    - monitoring

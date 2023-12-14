@@ -1,0 +1,19 @@
+---
+- name: Install package dependencies
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - chrony
+    - moreutils
+  tags:
+    - monitoring
+
+- name: Include tasks to setup APT monitoring
+  ansible.builtin.include_tasks: apt-monitoring.yaml
+
+- name: Include tasks to setup network flow accounting
+  ansible.builtin.include_tasks: flows.yaml
+
+- name: Include tasks to setup Net-SNMP agent
+  ansible.builtin.include_tasks: net-snmp.yaml

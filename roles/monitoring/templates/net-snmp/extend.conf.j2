@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+extend reboot-check {{ monitoring_snmpd_extend_dir }}/reboot-required.sh
+extend smart_health {{ monitoring_snmpd_extend_dir }}/smart-check.sh
+
+extend chrony_mon_skew '{{ monitoring_snmpd_extend_dir }}/chrony-mon.sh skew'
+extend chrony_mon_rms-offset '{{ monitoring_snmpd_extend_dir }}/chrony-mon.sh rms-offset'
+extend chrony_mon_root-delay '{{ monitoring_snmpd_extend_dir }}/chrony-mon.sh root-delay'
+extend chrony_mon_last-offset '{{ monitoring_snmpd_extend_dir }}/chrony-mon.sh last-offset'
+extend chrony_mon_root-dispersion '{{ monitoring_snmpd_extend_dir }}/chrony-mon.sh root-dispersion'
+extend chrony_mon_leap-status '{{ monitoring_snmpd_extend_dir }}/chrony-mon.sh leap-status'

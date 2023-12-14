@@ -1,0 +1,48 @@
+---
+- name: Install pmacct package
+  ansible.builtin.apt:
+    name: pmacct
+    state: present
+  tags:
+    - monitoring
+    - flows
+
+- name: Ensures config dir exists
+  ansible.builtin.file:
+    path: /etc/pmacct
+    state: directory
+    mode: "0750"
+  tags:
+    - monitoring
+    - flows
+
+- name: Setup pmacctd configuration
+  ansible.builtin.template:
+    src: pmacct/pmacctd.conf.j2
+    dest: /etc/pmacct/pmacctd.conf
+    mode: "0640"
+  notify:
+    - Restart pmacctd
+  tags:
+    - monitoring
+    - flows
+
+- name: Setup pretag map
+  ansible.builtin.template:
+    src: pmacct/pretag.map.j2
+    dest: /etc/pmacct/pretag.map
+    mode: "0640"
+  notify:
+    - Restart pmacctd
+  tags:
+    - monitoring
+    - flows
+
+- name: Ensure pmacctd is running and enabled
+  ansible.builtin.service:
+    name: pmacctd
+    state: started
+    enabled: true
+  tags:
+    - monitoring
+    - flows
