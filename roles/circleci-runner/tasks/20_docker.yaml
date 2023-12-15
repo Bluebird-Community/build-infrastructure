@@ -1,0 +1,41 @@
+---
+# - name: Print all available facts
+#   ansible.builtin.debug:
+#     var: ansible_facts
+
+- name: Install required system packages
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg
+    state: present
+    update_cache: true
+
+- name: Add Docker repository key to a keyring file
+  ansible.builtin.apt_key:
+    url: "{{ docker_repo_key_url }}"
+    keyring: "{{ docker_repo_keyring_file }}"
+  tags:
+    - docker
+    - repository
+
+- name: Install CircleCI repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ docker_os_arch }} signed-by={{ docker_repo_keyring_file }}] {{ docker_repo_url }} {{ docker_os_version_codename }} {{ docker_release }}"
+    state: present
+    update_cache: true
+  tags:
+    - docker
+    - repository
+
+- name: Install Docker engine
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+  tags:
+    - docker

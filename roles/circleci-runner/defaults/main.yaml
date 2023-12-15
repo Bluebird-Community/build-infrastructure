@@ -1,4 +1,28 @@
 ---
+# OpenJDK is a required for every component OpenNMS is running on and should be the same JDK version
+system_filelimit: 1048576
+openjdk_java_arch: amd64
+openjdk_version: 17
+openjdk_pkg_version: "{{ openjdk_version }}*"
+
+openjdk_maven_main_version: 3
+openjdk_maven_version: "{{ openjdk_maven_main_version }}.9.6"
+openjdk_maven_url: "https://dlcdn.apache.org/maven/maven-{{ openjdk_maven_main_version }}/{{ openjdk_maven_version }}/binaries/apache-maven-{{ openjdk_maven_version }}-bin.tar.gz"
+openjdk_maven_checksum_url: "https://downloads.apache.org/maven/maven-{{ openjdk_maven_main_version }}/{{ openjdk_maven_version }}/binaries/apache-maven-{{ openjdk_maven_version }}-bin.tar.gz.sha512"
+openjdk_maven_home: /opt/maven
+
+nodejs_major_version: 18
+nodejs_repo_key_url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+nodejs_repo_keyring_file: /etc/apt/keyrings/nodesource.gpg
+nodejs_repo_url: https://deb.nodesource.com/node_{{ nodejs_major_version }}.x
+
+docker_os_arch: amd64
+docker_repo_url: https://download.docker.com/linux/ubuntu
+docker_repo_key_url: https://download.docker.com/linux/ubuntu/gpg
+docker_repo_keyring_file: /etc/apt/keyrings/docker.gpg
+docker_os_version_codename: jammy
+docker_release: stable
+
 repository_url: https://packagecloud.io/circleci/runner/any
 repository_key_url: https://packagecloud.io/circleci/runner/gpgkey
 repository_keyring_file: /etc/apt/keyrings/circleci_runner-archive-keyring.gpg
