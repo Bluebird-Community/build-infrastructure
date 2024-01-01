@@ -68,6 +68,24 @@
     - circleci-runner
     - bash
 
+- name: Create Maven directory in data directory
+  ansible.builtin.file:
+    path: /data/circleci-runner/m2
+    state: directory
+    mode: "0755"
+    owner: circleci
+    group: circleci
+  tags:
+    - maven
+
+- name: Create a symbolic link for CircleCI .m2 repository
+  ansible.builtin.file:
+    src: /data/circleci-runner/m2
+    dest: /home/circleci/.m2
+    owner: circleci
+    group: circleci
+    state: link
+
 - name: Enable and start circleci-runner systemd unit
   ansible.builtin.service:
     name: circleci-runner.service
