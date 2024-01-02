@@ -85,6 +85,16 @@
     owner: circleci
     group: circleci
     state: link
+  tags:
+    - maven
+
+- name: Add circleci user to group docker
+  ansible.builtin.user:
+    name: circleci
+    groups: docker
+    append: yes
+  tags:
+    - docker
 
 - name: Enable and start circleci-runner systemd unit
   ansible.builtin.service:
