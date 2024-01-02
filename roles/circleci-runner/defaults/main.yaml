@@ -1,4 +1,5 @@
 ---
+timezone: Europe/Berlin
 # OpenJDK is a required for every component OpenNMS is running on and should be the same JDK version
 system_filelimit: 1048576
 openjdk_java_arch: amd64
