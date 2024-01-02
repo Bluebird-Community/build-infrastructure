@@ -16,5 +16,5 @@
     group: root
 
 - name: Set timezone to Europe/Berlin
-  timezone:
+  community.general.timezone:
     name: "{{ timezone }}"

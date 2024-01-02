@@ -92,7 +92,7 @@
   ansible.builtin.user:
     name: circleci
     groups: docker
-    append: yes
+    append: true
   tags:
     - docker
 
