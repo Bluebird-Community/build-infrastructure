@@ -96,6 +96,23 @@
   tags:
     - docker
 
+- name: Download and extract CircleCI cli tool
+  ansible.builtin.unarchive:
+    src: "{{ circlecli_url }}"
+    dest: /tmp
+    remote_src: true
+  tags:
+    - circleci-runner
+    - circleci-cli
+
+- name: Install CircleCI cli tool
+  ansible.builtin.command:
+    cmd: cp /tmp/circleci-cli_{{ circlecli_version }}_{{ circlecli_arch }}/circleci /usr/bin
+    creates: /usr/bin/circleci
+  tags:
+    - circleci-runner
+    - circleci-cli
+
 - name: Enable and start circleci-runner systemd unit
   ansible.builtin.service:
     name: circleci-runner.service
