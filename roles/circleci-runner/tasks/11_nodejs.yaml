@@ -20,3 +20,5 @@
   ansible.builtin.apt:
     name:
       - nodejs={{ nodejs_major_version }}.*
+  tags:
+    - nodejs
