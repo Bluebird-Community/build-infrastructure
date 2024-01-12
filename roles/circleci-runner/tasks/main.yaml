@@ -11,13 +11,20 @@
 - name: Include tasks to setup Docker container engine
   ansible.builtin.include_tasks: 20_docker.yaml
 
+- name: Include tasks to install the OpenNMS repository
+  ansible.builtin.include_tasks: 30_opennms.yaml
+
 - name: Installing build tools
   ansible.builtin.apt:
     name:
       - bzip2
       - git
+      - jicmp
+      - jicmp6
+      - jrrd2
       - make
       - ripgrep
+      - "rrdtool={{ rrdtool_version }}"
       - tree
       - xz-utils
 

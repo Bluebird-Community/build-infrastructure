@@ -24,6 +24,15 @@ docker_repo_keyring_file: /etc/apt/keyrings/docker.gpg
 docker_os_version_codename: jammy
 docker_release: stable
 
+opennms_os_arch: amd64
+opennms_key_url: https://packages.opennms.com/public/stable/gpg.697677243260D071.key
+opennms_key_ring_file: /usr/share/keyrings/opennms-stable-archive-keyring.gpg
+opennms_repo_url: https://packages.opennms.com/public/stable/deb/ubuntu
+opennms_common_key_url: https://packages.opennms.com/public/common/gpg.697677243260D071.key
+opennms_common_key_ring_file: /usr/share/keyrings/opennms-common-archive-keyring.gpg
+opennms_common_repo_url: https://packages.opennms.com/public/common/deb/ubuntu
+rrdtool_version: 1.7.*
+
 repository_url: https://packagecloud.io/circleci/runner/any
 repository_key_url: https://packagecloud.io/circleci/runner/gpgkey
 repository_keyring_file: /etc/apt/keyrings/circleci_runner-archive-keyring.gpg

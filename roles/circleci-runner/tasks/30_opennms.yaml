@@ -1,0 +1,34 @@
+---
+- name: Add OpenNMS key to a keyring file
+  ansible.builtin.apt_key:
+    url: "{{ opennms_key_url }}"
+    keyring: "{{ opennms_key_ring_file }}"
+  tags:
+    - opennms
+    - repository
+
+- name: Add OpenNMS Commons key to a keyring file
+  ansible.builtin.apt_key:
+    url: "{{ opennms_common_key_url }}"
+    keyring: "{{ opennms_common_key_ring_file }}"
+  tags:
+    - opennms
+    - repository
+
+- name: Install OpenNMS APT repository for stable releases
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ opennms_os_arch }} signed-by={{ opennms_key_ring_file }}] {{ opennms_repo_url }} {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: true
+  tags:
+    - opennms
+    - repository
+
+- name: Install OpenNMS APT commons repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ opennms_os_arch }} signed-by={{ opennms_common_key_ring_file }}] {{ opennms_common_repo_url }} {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: true
+  tags:
+    - opennms
+    - repository
