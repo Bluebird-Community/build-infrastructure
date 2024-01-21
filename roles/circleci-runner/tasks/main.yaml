@@ -16,6 +16,7 @@
 
 - name: Installing build tools
   ansible.builtin.apt:
+    install-recommends: false
     name:
       - bzip2
       - git
@@ -23,10 +24,23 @@
       - jicmp6
       - jrrd2
       - make
+      - r-base
       - ripgrep
       - "rrdtool={{ rrdtool_version }}"
       - tree
       - xz-utils
+  tags:
+    - build-dependencies
+
+- name: Installing Debian packaging tools
+  ansible.builtin.apt:
+    install-recommends: false
+    name:
+      - debhelper
+      - devscripts
+  tags:
+    - build-dependencies
+    - debian-packages
 
 - name: Include tasks to setup CircleCI runner
   ansible.builtin.include_tasks: 50_circleci.yaml

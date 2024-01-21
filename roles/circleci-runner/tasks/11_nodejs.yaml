@@ -22,3 +22,13 @@
       - nodejs={{ nodejs_major_version }}.*
   tags:
     - nodejs
+
+- name: Installing Yarn as NPM package
+  community.general.npm:
+    name: yarn
+    global: true
+
+- name: Installing "node-gyp".
+  community.general.yarn:
+    name: node-gyp
+    global: true
