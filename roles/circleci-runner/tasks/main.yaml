@@ -2,27 +2,13 @@
 - name: Include tasks to configure the operating system
   ansible.builtin.include_tasks: 01_system_settings.yaml
 
-- name: Include tasks to setup OpenJDK
-  ansible.builtin.include_tasks: 10_openjdk.yaml
-
-- name: Include tasks to setup NodeJS
-  ansible.builtin.include_tasks: 11_nodejs.yaml
-
-- name: Include tasks to setup Docker container engine
-  ansible.builtin.include_tasks: 20_docker.yaml
-
-- name: Include tasks to install the OpenNMS repository
-  ansible.builtin.include_tasks: 30_opennms.yaml
-
 - name: Installing build tools
   ansible.builtin.apt:
     install-recommends: false
     name:
       - bzip2
+      - curl
       - git
-      - jicmp
-      - jicmp6
-      - jrrd2
       - make
       - r-base
       - ripgrep
@@ -32,10 +18,28 @@
   tags:
     - build-dependencies
 
-- name: Installing Debian packaging tools
+- name: Include tasks to setup OpenJDK
+  ansible.builtin.include_tasks: 10_openjdk.yaml
+
+- name: Include tasks to setup NodeJS
+  ansible.builtin.include_tasks: 11_nodejs.yaml
+
+- name: Include tasks to setup Docker container engine
+  ansible.builtin.include_tasks: 20_docker.yaml
+
+- name: Include tasks to install build tools for OCI image scans
+  ansible.builtin.include_tasks: 21_oci-tools.yaml
+
+- name: Include tasks to install the OpenNMS repository
+  ansible.builtin.include_tasks: 30_opennms.yaml
+
+- name: Installing Debian packaging tools and JICMP and JRRD dependencies
   ansible.builtin.apt:
     install-recommends: false
     name:
+      - jicmp
+      - jicmp6
+      - jrrd2
       - debhelper
       - devscripts
   tags:

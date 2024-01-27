@@ -33,6 +33,10 @@ opennms_common_key_ring_file: /usr/share/keyrings/opennms-common-archive-keyring
 opennms_common_repo_url: https://packages.opennms.com/public/common/deb/ubuntu
 rrdtool_version: 1.7.*
 
+trivy_key_url: https://aquasecurity.github.io/trivy-repo/deb/public.key
+trivy_key_ring_file: /etc/apt/keyrings/trivy.gpg
+trivy_repo_url: https://aquasecurity.github.io/trivy-repo/deb
+
 repository_url: https://packagecloud.io/circleci/runner/any
 repository_key_url: https://packagecloud.io/circleci/runner/gpgkey
 repository_keyring_file: /etc/apt/keyrings/circleci_runner-archive-keyring.gpg
