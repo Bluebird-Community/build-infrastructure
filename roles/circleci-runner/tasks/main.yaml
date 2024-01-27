@@ -28,7 +28,7 @@
   ansible.builtin.include_tasks: 20_docker.yaml
 
 - name: Include tasks to install build tools for OCI image scans
-  ansible.builtin.include_tasks: 21_oci-tools.yaml
+  ansible.builtin.include_tasks: 21_supply-chain-tools.yaml
 
 - name: Include tasks to install the OpenNMS repository
   ansible.builtin.include_tasks: 30_opennms.yaml

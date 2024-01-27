@@ -37,6 +37,10 @@ trivy_key_url: https://aquasecurity.github.io/trivy-repo/deb/public.key
 trivy_key_ring_file: /etc/apt/keyrings/trivy.gpg
 trivy_repo_url: https://aquasecurity.github.io/trivy-repo/deb
 
+sonar_scanner_cli_version: 5.0.1.3006
+sonar_scanner_cli_os: linux
+sonar_scanner_cli_url: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-{{ sonar_scanner_cli_version }}-{{ sonar_scanner_cli_os }}.zip
+
 repository_url: https://packagecloud.io/circleci/runner/any
 repository_key_url: https://packagecloud.io/circleci/runner/gpgkey
 repository_keyring_file: /etc/apt/keyrings/circleci_runner-archive-keyring.gpg

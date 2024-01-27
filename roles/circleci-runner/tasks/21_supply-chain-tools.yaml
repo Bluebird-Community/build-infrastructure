@@ -1,0 +1,61 @@
+---
+- name: Add Trivy key to a keyring file
+  ansible.builtin.apt_key:
+    url: "{{ trivy_key_url }}"
+    keyring: "{{ trivy_key_ring_file }}"
+  tags:
+    - trivy
+    - repository
+
+- name: Install Trivy APT repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by={{ trivy_key_ring_file }}] {{ trivy_repo_url }} {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: true
+  tags:
+    - trivy
+    - repository
+
+- name: Install Trivy OCI security scanner
+  ansible.builtin.apt:
+    name:
+      - trivy
+  tags:
+    - trivy
+
+- name: Install syft generating SBOMs for container images
+  ansible.builtin.command:
+    cmd: curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+    creates: /usr/local/bin/syft
+  tags:
+    - syft
+
+- name: Extract and install SonarScanner CLI
+  ansible.builtin.unarchive:
+    src: "{{ sonar_scanner_cli_url }}"
+    dest: /opt
+    owner: circleci
+    group: circleci
+    remote_src: true
+  tags:
+    - sonar-scanner
+
+- name: Create a symbolic link Sonar Scanner CLI
+  ansible.builtin.file:
+    src: /opt/sonar-scanner-{{ sonar_scanner_cli_version }}-{{ sonar_scanner_cli_os }}/bin/sonar-scanner
+    dest: /usr/local/bin/sonar-scanner
+    owner: circleci
+    group: circleci
+    state: link
+  tags:
+    - sonar-scanner
+
+- name: Create a symbolic link Sonar Scanner CLI with debug
+  ansible.builtin.file:
+    src: /opt/sonar-scanner-{{ sonar_scanner_cli_version }}-{{ sonar_scanner_cli_os }}/bin/sonar-scanner-debug
+    dest: /usr/local/bin/sonar-scanner-debug
+    owner: circleci
+    group: circleci
+    state: link
+  tags:
+    - sonar-scanner
