@@ -20,7 +20,7 @@
     - docker
     - repository
 
-- name: Install CircleCI repository
+- name: Install Docker repository
   ansible.builtin.apt_repository:
     repo: "deb [arch={{ docker_os_arch }} signed-by={{ docker_repo_keyring_file }}] {{ docker_repo_url }} {{ docker_os_version_codename }} {{ docker_release }}"
     state: present
@@ -37,5 +37,13 @@
       - containerd.io
       - docker-buildx-plugin
       - docker-compose-plugin
+  tags:
+    - docker
+
+- name: Add circleci user to group docker
+  ansible.builtin.user:
+    name: "{{ cicd_user }}"
+    groups: docker
+    append: true
   tags:
     - docker

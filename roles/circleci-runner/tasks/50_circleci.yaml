@@ -41,7 +41,8 @@
     src: circleci-runner-config.yaml.j2
     dest: "{{ circleci_config_path }}"
     mode: "0640"
-    owner: circleci
+    owner: "{{ cicd_user }}"
+    group: "{{ cicd_group }}"
   notify:
     - Restart circleci-runner
   tags:
@@ -51,8 +52,8 @@
   ansible.builtin.file:
     path: "{{ runner.working_directory }}"
     state: directory
-    owner: circleci
-    group: circleci
+    owner: "{{ cicd_user }}"
+    group: "{{ cicd_group }}"
     mode: "0750"
   tags:
     - circleci-runner
@@ -62,8 +63,8 @@
     src: bashrc.j2
     dest: "/home/circleci/.bashrc"
     mode: "0640"
-    owner: circleci
-    group: circleci
+    owner: "{{ cicd_user }}"
+    group: "{{ cicd_group }}"
   tags:
     - circleci-runner
     - bash
@@ -73,8 +74,8 @@
     path: /data/circleci-runner/m2
     state: directory
     mode: "0755"
-    owner: circleci
-    group: circleci
+    owner: "{{ cicd_user }}"
+    group: "{{ cicd_group }}"
   tags:
     - maven
 
@@ -82,19 +83,11 @@
   ansible.builtin.file:
     src: /data/circleci-runner/m2
     dest: /home/circleci/.m2
-    owner: circleci
-    group: circleci
+    owner: "{{ cicd_user }}"
+    group: "{{ cicd_group }}"
     state: link
   tags:
     - maven
-
-- name: Add circleci user to group docker
-  ansible.builtin.user:
-    name: circleci
-    groups: docker
-    append: true
-  tags:
-    - docker
 
 - name: Download and extract CircleCI cli tool
   ansible.builtin.unarchive:

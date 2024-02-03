@@ -2,6 +2,9 @@
 timezone: Europe/Berlin
 # OpenJDK is a required for every component OpenNMS is running on and should be the same JDK version
 system_filelimit: 1048576
+cicd_user: circleci
+cicd_group: circleci
+
 openjdk_java_arch: amd64
 openjdk_version: 17
 openjdk_pkg_version: "{{ openjdk_version }}*"
@@ -40,6 +43,10 @@ trivy_repo_url: https://aquasecurity.github.io/trivy-repo/deb
 sonar_scanner_cli_version: 5.0.1.3006
 sonar_scanner_cli_os: linux
 sonar_scanner_cli_url: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-{{ sonar_scanner_cli_version }}-{{ sonar_scanner_cli_os }}.zip
+
+syft_version: 0.103.1
+syft_os: linux_amd64
+syft_url: https://github.com/anchore/syft/releases/download/v{{ syft_version }}/syft_{{ syft_version }}_{{ syft_os }}.tar.gz
 
 repository_url: https://packagecloud.io/circleci/runner/any
 repository_key_url: https://packagecloud.io/circleci/runner/gpgkey

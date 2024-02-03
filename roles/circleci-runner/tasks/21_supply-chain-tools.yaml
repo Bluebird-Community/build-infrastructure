@@ -23,10 +23,14 @@
   tags:
     - trivy
 
-- name: Install syft generating SBOMs for container images
-  ansible.builtin.command:
-    cmd: curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
-    creates: /usr/local/bin/syft
+- name: Extract and install syft generating SBOMs for container images
+  ansible.builtin.unarchive:
+    src: "{{ syft_url }}"
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: "0755"
+    remote_src: true
   tags:
     - syft
 
@@ -34,8 +38,8 @@
   ansible.builtin.unarchive:
     src: "{{ sonar_scanner_cli_url }}"
     dest: /opt
-    owner: circleci
-    group: circleci
+    owner: "{{ cicd_user }}"
+    group: "{{ cicd_group }}"
     remote_src: true
   tags:
     - sonar-scanner
@@ -44,8 +48,8 @@
   ansible.builtin.file:
     src: /opt/sonar-scanner-{{ sonar_scanner_cli_version }}-{{ sonar_scanner_cli_os }}/bin/sonar-scanner
     dest: /usr/local/bin/sonar-scanner
-    owner: circleci
-    group: circleci
+    owner: "{{ cicd_user }}"
+    group: "{{ cicd_group }}"
     state: link
   tags:
     - sonar-scanner
@@ -54,8 +58,8 @@
   ansible.builtin.file:
     src: /opt/sonar-scanner-{{ sonar_scanner_cli_version }}-{{ sonar_scanner_cli_os }}/bin/sonar-scanner-debug
     dest: /usr/local/bin/sonar-scanner-debug
-    owner: circleci
-    group: circleci
+    owner: "{{ cicd_user }}"
+    group: "{{ cicd_group }}"
     state: link
   tags:
     - sonar-scanner
