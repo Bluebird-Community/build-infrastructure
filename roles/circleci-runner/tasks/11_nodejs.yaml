@@ -29,6 +29,8 @@
     global: true
 
 - name: Installing "node-gyp".
+  become: yes
+  become_user: "{{ cicd_user }}"
   community.general.yarn:
     name: node-gyp
     global: true
