@@ -48,6 +48,10 @@ syft_version: 0.103.1
 syft_os: linux_amd64
 syft_url: https://github.com/anchore/syft/releases/download/v{{ syft_version }}/syft_{{ syft_version }}_{{ syft_os }}.tar.gz
 
+packer_key_url: https://apt.releases.hashicorp.com/gpg
+packer_key_ring_file: /etc/apt/keyrings/packer.gpg
+packer_repo_url: https://apt.releases.hashicorp.com
+
 repository_url: https://packagecloud.io/circleci/runner/any
 repository_key_url: https://packagecloud.io/circleci/runner/gpgkey
 repository_keyring_file: /etc/apt/keyrings/circleci_runner-archive-keyring.gpg
