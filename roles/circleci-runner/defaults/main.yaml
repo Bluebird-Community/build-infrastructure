@@ -69,7 +69,7 @@ runner:
 logging:
   level: info
   format: text
-  file: "-"
-circlecli_version: 0.1.29658
+  file: "/var/log/circleci.runner.log"
+circlecli_version: 0.1.30549
 circlecli_arch: "{{ system_os }}_{{ system_arch }}"
 circlecli_url: https://github.com/CircleCI-Public/circleci-cli/releases/download/v{{ circlecli_version }}/circleci-cli_{{ circlecli_version }}_{{ circlecli_arch }}.tar.gz

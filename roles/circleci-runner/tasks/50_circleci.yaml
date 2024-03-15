@@ -101,7 +101,6 @@
 - name: Install CircleCI cli tool
   ansible.builtin.command:
     cmd: cp /tmp/circleci-cli_{{ circlecli_version }}_{{ circlecli_arch }}/circleci /usr/bin
-    creates: /usr/bin/circleci
   tags:
     - circleci-runner
     - circleci-cli
