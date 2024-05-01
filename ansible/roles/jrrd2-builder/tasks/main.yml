@@ -1,0 +1,10 @@
+---
+- name: Install JRRD2 build environment
+  ansible.builtin.apt:
+    name:
+      - cmake
+      - g++
+      - librrd-dev
+      - pkg-config
+  tags:
+    - jrrd2

@@ -10,10 +10,10 @@
     - monitoring
 
 - name: Include tasks to setup APT monitoring
-  ansible.builtin.include_tasks: apt-monitoring.yaml
+  ansible.builtin.include_tasks: apt-monitoring.yml
 
 - name: Include tasks to setup network flow accounting
-  ansible.builtin.include_tasks: flows.yaml
+  ansible.builtin.include_tasks: flows.yml
 
 - name: Include tasks to setup Net-SNMP agent
-  ansible.builtin.include_tasks: net-snmp.yaml
+  ansible.builtin.include_tasks: net-snmp.yml

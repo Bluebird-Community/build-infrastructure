@@ -1,0 +1,11 @@
+---
+system_arch: amd64
+
+opennms_os_arch: "{{ system_arch }}"
+opennms_key_url: https://packages.opennms.com/public/stable/gpg.697677243260D071.key
+opennms_key_ring_file: /usr/share/keyrings/opennms-stable-archive-keyring.gpg
+opennms_repo_url: https://packages.opennms.com/public/stable/deb/ubuntu
+opennms_common_key_url: https://packages.opennms.com/public/common/gpg.697677243260D071.key
+opennms_common_key_ring_file: /usr/share/keyrings/opennms-common-archive-keyring.gpg
+opennms_common_repo_url: https://packages.opennms.com/public/common/deb/ubuntu
+rrdtool_version: 1.7.*

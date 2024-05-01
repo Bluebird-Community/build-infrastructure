@@ -1,7 +1,7 @@
 ---
 - name: Installing OpenJDK {{ openjdk_version }}
   ansible.builtin.apt:
-    name: "openjdk-{{ openjdk_version }}-jdk-headless={{ openjdk_pkg_version }}"
+    name: "openjdk-{{ openjdk_version }}-jdk={{ openjdk_pkg_version }}"
     state: present
     install_recommends: false
   tags:

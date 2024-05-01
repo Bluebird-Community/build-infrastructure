@@ -1,0 +1,9 @@
+---
+- name: Install C build environment for jicmp, jicmp6
+  ansible.builtin.apt:
+    name:
+      - libtool
+      - openjdk-8-jdk
+  tags:
+    - jicmp
+    - jicmp6

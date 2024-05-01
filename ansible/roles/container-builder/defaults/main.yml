@@ -1,0 +1,20 @@
+---
+cicd_user: cicd
+system_arch: amd64
+
+docker_os_arch: "{{ system_arch }}"
+docker_repo_url: https://download.docker.com/linux/ubuntu
+docker_repo_key_url: https://download.docker.com/linux/ubuntu/gpg
+docker_repo_keyring_file: /etc/apt/keyrings/docker.gpg
+docker_os_version_codename: jammy
+docker_release: stable
+
+trivy_key_url: https://aquasecurity.github.io/trivy-repo/deb/public.key
+trivy_key_ring_file: /etc/apt/keyrings/trivy.gpg
+trivy_repo_url: https://aquasecurity.github.io/trivy-repo/deb
+
+syft_version: 0.103.1
+syft_os: "linux_{{ system_arch }}"
+syft_url: https://github.com/anchore/syft/releases/download/v{{ syft_version }}/syft_{{ syft_version }}_{{ syft_os }}.tar.gz
+
+dive_version: 0.12.0
