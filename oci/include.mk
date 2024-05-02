@@ -98,7 +98,8 @@ login: deps
 
 scan: oci
 	@echo "Vulnerability scan for $(PROJECT_DIR):$(subst /,-,$(SINGLE_ARCH))"
-	docker scan --dependency-tree $(PROJECT_DIR):$(subst /,-,$(SINGLE_ARCH))
+	docker scout cves --ignore-base --format markdown $(PROJECT_DIR):$(subst /,-,$(SINGLE_ARCH)) > build/cves.html
+	docker scout recommendations $(PROJECT_DIR):$(subst /,-,$(SINGLE_ARCH)) -o build/recommendations.txt
 
 publish: info Dockerfile builder-instance login
 	@echo -n "Verify image tag in registry for $(DOCKER_TAG): "
