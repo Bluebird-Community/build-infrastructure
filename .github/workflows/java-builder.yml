@@ -20,4 +20,19 @@ jobs:
       - uses: actions/checkout@v4
       - name: Create Java builder container image
         working-directory: oci/java-builder
-        run: make
+        run: |
+          make
+          make scan
+      - name: Persist OCI
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-builder-oci
+          path: |
+            build/*.oci
+      - name: Persist scan results
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-results
+          path: |
+            build/cves.html
+            build/recommendations.txt
