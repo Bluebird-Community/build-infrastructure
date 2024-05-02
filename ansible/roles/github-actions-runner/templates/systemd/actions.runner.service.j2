@@ -1,0 +1,14 @@
+[Unit]
+Description=GitHub Actions Runner ({{ gh_org }}.{{ gh_host }})
+After=network.target
+
+[Service]
+ExecStart={{ gh_actions_runner_working_directory }}/runsvc.sh
+User=circleci-admin
+WorkingDirectory={{ gh_actions_runner_working_directory }}
+KillMode=process
+KillSignal=SIGTERM
+TimeoutStopSec=5min
+
+[Install]
+WantedBy=multi-user.target

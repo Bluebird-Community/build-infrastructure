@@ -1,0 +1,17 @@
+---
+- name: CI/CD-Runner
+  hosts: cicd_runner
+  become: true
+  roles:
+    - system-settings
+    - prometheus.prometheus.node_exporter
+    - monitoring
+    - container-builder
+    - iplike-builder
+    - java-builder
+    - jicmp-builder
+    - jrrd2-builder
+    - nodejs-builder
+    - vm-builder
+    - opennms
+    - sonarcloud

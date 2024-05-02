@@ -1,0 +1,36 @@
+---
+- name: Add NodeJS repository key to a keyring file
+  ansible.builtin.apt_key:
+    url: "{{ nodejs_repo_key_url }}"
+    keyring: "{{ nodejs_repo_keyring_file }}"
+  tags:
+    - nodejs
+    - repository
+
+- name: Install NodeJS repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by={{ nodejs_repo_keyring_file }}] {{ nodejs_repo_url }} nodistro main"
+    state: present
+    update_cache: true
+  tags:
+    - nodejs
+    - repository
+
+- name: Install NodeJS packages
+  ansible.builtin.apt:
+    name:
+      - nodejs={{ nodejs_major_version }}.*
+  tags:
+    - nodejs
+
+- name: Installing Yarn as NPM package
+  community.general.npm:
+    name: yarn
+    global: true
+
+- name: Installing "node-gyp".
+  become: yes
+  become_user: "{{ cicd_user }}"
+  community.general.yarn:
+    name: node-gyp
+    global: true

@@ -56,10 +56,19 @@ help:
 	@echo ""
 
 deps:
-	@command -v envsubst;
-	@command -v docker;
-	@command -v shellcheck;
-	@command -v hadolint;
+	command -v envsubst;
+	command -v docker;
+	command -v shellcheck;
+	command -v hadolint;
+
+deps-sbom:
+	command -v syft;
+
+deps-sec-scan:
+	command -v trivy;
+
+deps-show:
+	command -v dive;
 
 info: deps
 	@echo ""
@@ -96,12 +105,25 @@ login: deps
 	@echo "${CONTAINER_REGISTRY_PASS}" | docker login ${CONTAINER_REGISTRY} -u "${CONTAINER_REGISTRY_LOGIN}" --password-stdin > /dev/null
 	@echo -e "\033[0;32mDONE\033[0m"
 
-scan: oci
+scan: deps-sec-scan oci
 	@echo "Vulnerability scan for $(PROJECT_DIR):$(subst /,-,$(SINGLE_ARCH))"
-	docker scout cves --ignore-base --format markdown $(PROJECT_DIR):$(subst /,-,$(SINGLE_ARCH)) > build/cves.html
-	docker scout recommendations $(PROJECT_DIR):$(subst /,-,$(SINGLE_ARCH)) -o build/recommendations.txt
+	trivy image $(PROJECT_DIR):$(subst /,-,$(SINGLE_ARCH)) --timeout 30m --format json -o build/$(PROJECT_DIR)-report.json
+
+sbom: deps-sbom oci
+	@echo "Create SBOM from the OCI"
+	syft scan $(PROJECT_DIR):$(subst /,-,$(SINGLE_ARCH)) -o syft-table=build/$(PROJECT_DIR)-sbom.txt --quiet
+
+show: deps-show oci
+	@echo "Show image efficiency"
+	CI=true dive $(PROJECT_DIR):$(subst /,-,$(SINGLE_ARCH))
 
 publish: info Dockerfile builder-instance login
+	@echo -n "Verify image tag in registry for $(DOCKER_TAG): "
+	@if docker manifest inspect "$(DOCKER_TAG)" >/dev/null; then echo -e "\033[0;31mFAIL\033[0m - Image tag already published on registry."; exit 1; fi;
+	@echo -e "\033[0;32mDONE\033[0m"
+	docker buildx build -o type=registry --platform="$(MULTI_ARCH)" --tag "$(DOCKER_TAG)" .
+
+publish-no-login: info Dockerfile builder-instance
 	@echo -n "Verify image tag in registry for $(DOCKER_TAG): "
 	@if docker manifest inspect "$(DOCKER_TAG)" >/dev/null; then echo -e "\033[0;31mFAIL\033[0m - Image tag already published on registry."; exit 1; fi;
 	@echo -e "\033[0;32mDONE\033[0m"
@@ -122,4 +144,4 @@ clean: deps
 	@rm -rf ./build/*.oci
 	@echo -e "\033[0;32mDONE\033[0m"
 	@echo -n "Remove Builder instance:     "
-	@if docker buildx inspect "$(BUILDER_INSTANCE)" >/dev/null 2>&1; then docker buildx rm "$(BUILDER_INSTANCE)"; echo -e "\033[0;32mDONE\033[0m"; else echo "SKIPPED"; fi;
+	@docker context rm -f builder-java-builder

@@ -1,0 +1,10 @@
+# Use a filter to determine direction
+# Set 1 for ingress and 2 for egress
+#
+# Local MAC
+set_tag=1 filter='ether dst {{ monitoring_pmacctd_mac }}' jeq=eval_ifindexes
+set_tag=2 filter='ether src {{ monitoring_pmacctd_mac }}' jeq=eval_ifindexes
+
+# Use a filter to set the ifindexes
+set_tag2={{ monitoring_pmacctd_interface_index }} filter='ether src {{ monitoring_pmacctd_mac }}' label=eval_ifindexes
+set_tag2={{ monitoring_pmacctd_interface_index }} filter='ether dst {{ monitoring_pmacctd_mac }}' label=eval_ifindexes

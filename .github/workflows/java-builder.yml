@@ -1,6 +1,6 @@
 ---
-name: build-infra-container-builder
-run-name: Build container images for CICD infrastructure
+name: build-infra-java-builder
+run-name: Build Java builder OCI for CICD infrastructure
 on:
   push:
     paths:
@@ -8,6 +8,7 @@ on:
 
 jobs:
   oci-build:
+    if: github.ref != 'refs/heads/main'
     runs-on:
       group: Default
       labels:
@@ -17,22 +18,68 @@ jobs:
         - eu-central-de
         - labmonkeys
     steps:
-      - uses: actions/checkout@v4
       - name: Create Java builder container image
         working-directory: oci/java-builder
-        run: |
-          make
-          make scan
+        run: make
       - name: Persist OCI
         uses: actions/upload-artifact@v4
         with:
           name: java-builder-oci
           path: |
             build/*.oci
+      - name: Analyze image
+        working-directory: oci/java-builder
+        run: |
+          make show
+          make sbom
+          make scan
       - name: Persist scan results
         uses: actions/upload-artifact@v4
         with:
           name: scan-results
           path: |
-            build/cves.html
-            build/recommendations.txt
+            oci/**/build/*.txt
+            oci/**/build/*.json
+      - name: Clean the build instance
+        run: |
+          make clean
+
+  oci-publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on:
+      group: Default
+      labels:
+        - self-hosted
+        - Linux
+        - X64
+        - eu-central-de
+        - labmonkeys
+    steps:
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_PASSWORD }}
+      - uses: actions/checkout@v4
+      - name: Publish image
+        working-directory: oci/java-builder
+        run: |
+          make publish-no-login CONTAINER_REGISTRY_REPO=bluebird CONTAINER_REGISTRY=quay.io BUILD_VERSION_SUFFIX=.b${{ github.run_number }}
+      - name: Analyze image
+        working-directory: oci/java-builder
+        run: |
+          make show
+          make sbom
+          make scan
+      - name: Persist scan results
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-results
+          path: |
+            oci/**/build/*.txt
+            oci/**/build/*.json
+      - name: Clean the build instance
+        working-directory: oci/java-builder
+        run: |
+          make clean

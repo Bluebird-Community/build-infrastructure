@@ -1,1 +1,1 @@
-openjdk:jdk-17.0.11
+java-builder:0.0.1

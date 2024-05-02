@@ -1,0 +1,30 @@
+---
+- name: Extract and install SonarScanner CLI
+  ansible.builtin.unarchive:
+    src: "{{ sonar_scanner_cli_url }}"
+    dest: /opt
+    owner: "{{ cicd_user }}"
+    group: "{{ cicd_group }}"
+    remote_src: true
+  tags:
+    - sonar-scanner
+
+- name: Create a symbolic link Sonar Scanner CLI
+  ansible.builtin.file:
+    src: /opt/sonar-scanner-{{ sonar_scanner_cli_version }}-{{ sonar_scanner_cli_os }}/bin/sonar-scanner
+    dest: /usr/local/bin/sonar-scanner
+    owner: "{{ cicd_user }}"
+    group: "{{ cicd_group }}"
+    state: link
+  tags:
+    - sonar-scanner
+
+- name: Create a symbolic link Sonar Scanner CLI with debug
+  ansible.builtin.file:
+    src: /opt/sonar-scanner-{{ sonar_scanner_cli_version }}-{{ sonar_scanner_cli_os }}/bin/sonar-scanner-debug
+    dest: /usr/local/bin/sonar-scanner-debug
+    owner: "{{ cicd_user }}"
+    group: "{{ cicd_group }}"
+    state: link
+  tags:
+    - sonar-scanner

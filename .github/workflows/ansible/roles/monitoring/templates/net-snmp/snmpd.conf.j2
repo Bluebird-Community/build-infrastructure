@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+
+agentaddress udp:{{ monitoring_snmpd_port }}
+agentaddress udp6:{{ monitoring_snmpd_port }}
+
+# ACCESS CONTROL
+rocommunity {{ monitoring_snmpd_community }} default
+rocommunity6 {{ monitoring_snmpd_community }} default
+
+# AgentX Sub-agents
+master          agentx
+
+includeDir {{ monitoring_snmpd_include_dir }}

@@ -1,0 +1,20 @@
+---
+monitoring_node_exporter_version: 1.7.0
+monitoring_node_exporter_textfile_dir: /var/lib/node_exporter/textfile_collector
+
+monitoring_pmacctd_interface_index: 2
+monitoring_pmacctd_interface: eth0
+monitoring_pmacctd_mac: 11:22:33:44:55:66
+monitoring_pmacctd_version: 9
+monitoring_pmacctd_collector_ip: 127.0.0.1
+monitoring_pmacctd_collector_port: 9999
+
+monitoring_snmpd_disks: ['/ 5000000']
+monitoring_snmpd_procs: ['sshd']
+monitoring_snmpd_include_dir: /etc/snmp/conf.d
+monitoring_snmpd_community: public
+monitoring_snmpd_port: 161
+monitoring_snmpd_inform_sink: 127.0.0.1
+monitoring_snmpd_syslocation: Sittin in a dock at the bay
+monitoring_snmpd_syscontact: root@localhost
+monitoring_snmpd_extend_dir: /etc/snmp/extend

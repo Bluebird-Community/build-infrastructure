@@ -4,4 +4,6 @@ build/
 Dockerfile
 *.oci
 *.iml
-
+ansible/host_vars/
+ansible/inventory/
+ansible/ansible.cfg

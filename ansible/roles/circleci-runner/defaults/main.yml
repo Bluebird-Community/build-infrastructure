@@ -1,0 +1,22 @@
+---
+cicd_user: circleci
+cicd_group: circleci
+cicd_log_file: /var/log/circleci.runner.log
+
+repository_url: https://packagecloud.io/circleci/runner/any
+repository_key_url: https://packagecloud.io/circleci/runner/gpgkey
+repository_keyring_file: /etc/apt/keyrings/circleci_runner-archive-keyring.gpg
+circleci_config_path: /etc/circleci-runner/circleci-runner-config.yaml
+api:
+  auth_token: ""
+runner:
+  name: "{{ ansible_facts['hostname'] }}"
+  working_directory: /data/circleci-runner/workdir
+  cleanup_working_directory: "true"
+logging:
+  level: info
+  format: text
+  file: "/var/log/circleci.runner.log"
+circlecli_version: 0.1.30549
+circlecli_arch: "{{ system_os }}_{{ system_arch }}"
+circlecli_url: https://github.com/CircleCI-Public/circleci-cli/releases/download/v{{ circlecli_version }}/circleci-cli_{{ circlecli_version }}_{{ circlecli_arch }}.tar.gz

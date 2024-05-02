@@ -1,0 +1,5 @@
+---
+- name: Restart actions-runner
+  ansible.builtin.service:
+    name: actions.runner.service
+    state: restarted

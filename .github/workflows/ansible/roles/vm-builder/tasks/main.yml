@@ -1,0 +1,27 @@
+---
+- name: Add Packer key to a keyring file
+  ansible.builtin.apt_key:
+    url: "{{ packer_key_url }}"
+    keyring: "{{ packer_key_ring_file }}"
+  tags:
+    - packer
+    - repository
+
+- name: Install Packer APT repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by={{ packer_key_ring_file }}] {{ packer_repo_url }} {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: true
+  tags:
+    - packer
+    - repository
+
+- name: Install Packer
+  ansible.builtin.apt:
+    install_recommends: false
+    name:
+      - packer
+      - qemu-system-x86
+      - qemu-utils
+  tags:
+    - packer
