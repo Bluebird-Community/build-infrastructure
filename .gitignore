@@ -1,4 +1,6 @@
 .DS_Store
 .idea/
-host_vars/
-inventory/
+Dockerfile
+*.oci
+*.iml
+

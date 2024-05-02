@@ -1,0 +1,23 @@
+---
+name: build-infra-container-builder
+run-name: Build container images for CICD infrastructure
+on:
+  push:
+    paths:
+      - 'oci/java-builder/**'
+
+jobs:
+  oci-build:
+    runs-on:
+      group: Default
+      labels:
+        - self-hosted
+        - Linux
+        - X64
+        - eu-central-de
+        - labmonkeys
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Java builder container image
+        working-directory: oci/java-builder
+        run: make
