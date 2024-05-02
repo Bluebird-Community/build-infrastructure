@@ -75,3 +75,14 @@
     deb: "https://github.com/wagoodman/dive/releases/download/v{{ dive_version }}/dive_{{ dive_version }}_{{ system_os }}_{{ system_arch }}.deb"
   tags:
     - dive
+
+- name: Extract and install hadolint
+  ansible.builtin.get_url:
+    url: "{{ hadolint_url }}"
+    dest: /usr/local/bin/hadolint
+    checksum: "{{ hadolint_checksum  }}"
+    owner: root
+    group: root
+    mode: "0755"
+  tags:
+    - hadolint

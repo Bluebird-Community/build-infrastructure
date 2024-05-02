@@ -60,6 +60,7 @@
       - git
       - make
       - ripgrep
+      - shellcheck
       - tree
       - xz-utils
   tags:
