@@ -1,10 +1,10 @@
 ---
-name: build-infra-java-builder
-run-name: Build Java builder OCI for CICD infrastructure
+name: build-infra-bluebird-builder
+run-name: Create Bluebird builder OCI for CICD infrastructure
 on:
   push:
     paths:
-      - 'oci/java-builder/**'
+      - 'oci/bluebird-builder/**'
 
 jobs:
   oci-build:
@@ -19,16 +19,16 @@ jobs:
         - labmonkeys
     steps:
       - name: Create Java builder container image
-        working-directory: oci/java-builder
+        working-directory: oci/bluebird-builder
         run: make
       - name: Persist OCI
         uses: actions/upload-artifact@v4
         with:
-          name: java-builder-oci
+          name: bluebird-builder-oci
           path: |
             build/*.oci
       - name: Analyze image
-        working-directory: oci/java-builder
+        working-directory: oci/bluebird-builder
         run: |
           make show
           make sbom
@@ -63,11 +63,11 @@ jobs:
           password: ${{ secrets.QUAY_PASSWORD }}
       - uses: actions/checkout@v4
       - name: Publish image
-        working-directory: oci/java-builder
+        working-directory: oci/bluebird-builder
         run: |
           make publish-no-login CONTAINER_REGISTRY_REPO=bluebird CONTAINER_REGISTRY=quay.io BUILD_VERSION_SUFFIX=.b${{ github.run_number }}
       - name: Analyze image
-        working-directory: oci/java-builder
+        working-directory: oci/bluebird-builder
         run: |
           make show
           make sbom
@@ -80,6 +80,6 @@ jobs:
             oci/**/build/*.txt
             oci/**/build/*.json
       - name: Clean the build instance
-        working-directory: oci/java-builder
+        working-directory: oci/bluebird-builder
         run: |
           make clean
