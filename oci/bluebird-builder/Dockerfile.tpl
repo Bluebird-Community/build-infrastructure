@@ -5,9 +5,14 @@
 # hadolint ignore=DL3006
 FROM "${BASE_IMAGE}"
 
+ENV DEBIAN_FRONTEND=noninteractive
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # hadolint ignore=DL3008
 RUN apt-get update && \
-    apt-get -y install --no-install-recommends bzip2 \
+    apt-get -y install --no-install-recommends apt-utils \
+      bzip2 \
       ca-certificates \
       curl \
       git \
@@ -18,7 +23,15 @@ RUN apt-get update && \
       tree \
       xz-utils && \
     apt-get -y install --no-install-recommends openjdk-17-jdk="${OPENJDK_17_JDK_VERSION}" && \
+    curl -fsSL "https://deb.nodesource.com/setup_${NODEJS_MAJOR_VERSION}.x" | bash - && \
+    apt-get -y install --no-install-recommends nodejs="${NODEJS_MAJOR_VERSION}.*" && \
+    curl -fsSL https://get.docker.com | sh && \
+    apt-get autoremove && \
+    apt-get autoclean && \
     rm -rf /var/lib/apt/lists/*
+
+RUN  npm install --global "yarn@${YARN_VERSION}" && \
+     yarn global add "node-gyp@${NODE_GYP_VERSION}"
 
 RUN curl "https://dlcdn.apache.org/maven/maven-${MAVEN_MAIN_VERSION}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz" -o /tmp/maven.tar.gz && \
     mkdir /opt/maven && \
