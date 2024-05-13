@@ -11,3 +11,27 @@
   tags:
     - system
     - github-actions-runner
+
+- name: Set environment for GitHub Actions Runner
+  ansible.builtin.template:
+    src: env.j2
+    dest: {{ gh_actions_home }}/.env
+    mode: "0664"
+    owner: cicd
+    group: users
+  notify:
+    - Restart actions-runner
+  tags:
+    - github-actions-runner
+
+- name: Install Cleanup script for GitHub Actions Runner
+  ansible.builtin.template:
+    src: cleanup_script.sh.j2
+    dest: {{ gh_actions_home }}/cleanup_script.sh
+    mode: "0755"
+    owner: cicd
+    group: users
+  notify:
+    - Restart actions-runner
+  tags:
+    - github-actions-runner

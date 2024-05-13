@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+echo -n "Clean running containers: "
+if [ "$(docker ps -a -q)" ]; then
+  docker kill $(docker ps -a -q) || true
+  echo "[ OK ]"
+else
+  echo "[ SKIPPED ]"
+fi
+
+echo -n "Clean volumes:            "
+if [ "$(docker volume ls -q)" ]; then
+  docker volume rm $(docker volume ls -q) || true
+  echo "[ OK ]"
+else
+  echo "[ SKIPPED ]"
+fi
+
+echo -n "Clean Maven home:         "
+rm -rf "${HOME}/.m2/repository/*"
+echo "[ OK ]"
+
+echo -n "Clean Node caches:        "
+rm -rf "${HOME}/.cache/yarn"
+rm -rf "${HOME}/.cache/node-gyp"
+rm -rf "${HOME}/.cache/npm"
+echo "[ OK ]"
+
+echo -n "Clean container images    "
+docker system prune --all --volumes --force || true
