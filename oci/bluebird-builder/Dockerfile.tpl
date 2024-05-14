@@ -15,15 +15,19 @@ RUN apt-get update && \
       bzip2 \
       ca-certificates \
       curl \
+      gettext \
       git \
       gnupg \
       make \
       ripgrep \
       shellcheck \
       tree \
+      wget \
       xz-utils && \
     apt-get -y install --no-install-recommends openjdk-17-jdk="${OPENJDK_17_JDK_VERSION}" && \
     curl -fsSL "https://deb.nodesource.com/setup_${NODEJS_MAJOR_VERSION}.x" | bash - && \
+    curl -fsSL "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-x86_64" -o /usr/local/bin/hadolint && \
+    chmod +x /usr/local/bin/hadolint && \
     apt-get -y install --no-install-recommends nodejs="${NODEJS_MAJOR_VERSION}.*" && \
     curl -fsSL https://get.docker.com | sh && \
     apt-get autoremove && \

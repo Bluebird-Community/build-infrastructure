@@ -1,4 +1,0 @@
----
-packer_key_url: https://apt.releases.hashicorp.com/gpg
-packer_key_ring_file: /etc/apt/keyrings/packer.gpg
-packer_repo_url: https://apt.releases.hashicorp.com

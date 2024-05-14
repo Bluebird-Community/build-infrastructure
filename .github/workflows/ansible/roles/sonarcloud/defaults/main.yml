@@ -1,7 +1,0 @@
----
-cicd_user: cicd
-cicd_group: cicd
-
-sonar_scanner_cli_version: 5.0.1.3006
-sonar_scanner_cli_os: "{{ system_os }}"
-sonar_scanner_cli_url: "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-{{ sonar_scanner_cli_version }}-{{ sonar_scanner_cli_os }}.zip"

@@ -1,5 +1,5 @@
 ---
-name: build-infra-bluebird-builder
+name: bluebird-oci-builder
 run-name: Create Bluebird builder OCI for CICD infrastructure
 on:
   push:
@@ -7,16 +7,11 @@ on:
       - 'oci/bluebird-builder/**'
 
 jobs:
-  oci-build:
+  bluebird-oci-builder:
     if: github.ref != 'refs/heads/main'
-    runs-on:
-      group: Default
-      labels:
-        - self-hosted
-        - Linux
-        - X64
-        - eu-central-de
-        - labmonkeys
+    runs-on: ubuntu-latest
+    container:
+      image: quay.io/bluebird/bluebird-builder:0.1.0.b6
     steps:
       - name: Create Java builder container image
         working-directory: oci/bluebird-builder
@@ -44,7 +39,7 @@ jobs:
         run: |
           make clean
 
-  oci-publish:
+  bluebird-oci-publish:
     if: github.ref == 'refs/heads/main'
     runs-on:
       group: Default

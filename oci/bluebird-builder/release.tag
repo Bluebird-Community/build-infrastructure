@@ -1,1 +1,1 @@
-bluebird-builder:0.1.0
+bluebird-builder:0.1.1
