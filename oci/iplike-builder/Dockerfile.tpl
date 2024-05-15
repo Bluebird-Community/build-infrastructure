@@ -16,6 +16,8 @@ RUN apt-get update && \
       cdbs \
       curl \
       debhelper \
+      devscripts \
+      debsigs \
       dh-autoreconf \
       git \
       lsb-release \
