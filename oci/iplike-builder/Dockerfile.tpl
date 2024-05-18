@@ -21,7 +21,8 @@ RUN apt-get update && \
       dh-autoreconf \
       git \
       lsb-release \
-      patchutils && \
+      patchutils \
+      python3-pip && \
     apt-get autoremove && \
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists/*
