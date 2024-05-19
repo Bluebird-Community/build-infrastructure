@@ -83,10 +83,10 @@ shellcheck: deps
 
 hadolint: deps
 	@echo -n "Run Hadolint on all Dockerfile templates: "
-	@find . -type f -name 'Dockerfile.tpl' | xargs hadolint
+	@find . -type f -name 'Dockerfile' | xargs hadolint
 	@echo -e "\033[0;32mDONE\033[0m"
 
-Dockerfile: shellcheck hadolint info
+Dockerfile: shellcheck info
 	@echo -n "Generating Dockerfile: "
 	@source ./version-lock.sh && envsubst < "Dockerfile.tpl" > "Dockerfile"
 	@echo -e "\033[0;32mDONE\033[0m"
@@ -95,7 +95,7 @@ builder-instance: info
 	@if ! docker context inspect "$(BUILDER_INSTANCE)"; then docker context create "$(BUILDER_INSTANCE)"; fi;
 	docker context use "$(BUILDER_INSTANCE)"
 	
-oci: Dockerfile builder-instance
+oci: Dockerfile builder-instance hadolint
 	docker buildx build -o type=docker --platform="$(SINGLE_ARCH)" --tag $(PROJECT_DIR):$(subst /,-,$(SINGLE_ARCH)) .
 	docker image save $(PROJECT_DIR) -o ./build/$(PROJECT_DIR)_$(subst /,-,$(SINGLE_ARCH)).oci
 	@echo "Artifact for architecture $(SINGLE_ARCH): ./build/$(PROJECT_DIR)_$(subst /,-,$(SINGLE_ARCH)).oci"
