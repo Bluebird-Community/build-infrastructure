@@ -24,6 +24,7 @@ RUN apt-get update && \
       ripgrep \
       shellcheck \
       tree \
+      vim \
       wget \
       xz-utils && \
     curl -fsSL https://get.docker.com | sh && \
