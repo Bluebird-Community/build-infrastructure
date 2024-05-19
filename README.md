@@ -1,4 +1,4 @@
-[![iplike-oci-builder](https://github.com/Bluebird-Community/build-infrastructure/actions/workflows/iplike-builder.yml/badge.svg)](https://github.com/Bluebird-Community/build-infrastructure/actions/workflows/iplike-builder.yml)
+[![bluebird-oci-builder](https://github.com/Bluebird-Community/build-infrastructure/actions/workflows/bluebird-builder.yml/badge.svg)](https://github.com/Bluebird-Community/build-infrastructure/actions/workflows/bluebird-builder.yml)
 
 # Build Infrastructure
 
