@@ -1,29 +1,29 @@
 ---
-name: bluebird-oci-builder
-run-name: Create Bluebird builder OCI for CICD infrastructure
+name: base-oci-builder
+run-name: Create base builder OCI for CICD infrastructure
 on:
   push:
     paths:
-      - 'oci/bluebird-builder/**'
+      - 'oci/base-builder/**'
 
 jobs:
-  bluebird-oci-builder:
+  base-oci-builder:
     if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     container:
       image: quay.io/bluebird/base-builder:0.0.1.b1
     steps:
-      - name: Create Java builder container image
-        working-directory: oci/bluebird-builder
+      - name: Create Base builder container image
+        working-directory: oci/base-builder
         run: make
       - name: Persist OCI
         uses: actions/upload-artifact@v4
         with:
-          name: bluebird-builder-oci
+          name: base-builder-oci
           path: |
             build/*.oci
       - name: Analyze image
-        working-directory: oci/bluebird-builder
+        working-directory: oci/base-builder
         run: |
           make show
           make sbom
@@ -39,7 +39,7 @@ jobs:
         run: |
           make clean
 
-  bluebird-oci-publish:
+  base-oci-publish:
     if: github.ref == 'refs/heads/main'
     runs-on:
       group: Default
@@ -58,11 +58,11 @@ jobs:
           password: ${{ secrets.QUAY_PASSWORD }}
       - uses: actions/checkout@v4
       - name: Publish image
-        working-directory: oci/bluebird-builder
+        working-directory: oci/base-builder
         run: |
           make publish-no-login CONTAINER_REGISTRY_REPO=bluebird CONTAINER_REGISTRY=quay.io BUILD_VERSION_SUFFIX=.b${{ github.run_number }}
       - name: Analyze image
-        working-directory: oci/bluebird-builder
+        working-directory: oci/base-builder
         run: |
           make show
           make sbom
@@ -75,6 +75,6 @@ jobs:
             oci/**/build/*.txt
             oci/**/build/*.json
       - name: Clean the build instance
-        working-directory: oci/bluebird-builder
+        working-directory: oci/base-builder
         run: |
           make clean

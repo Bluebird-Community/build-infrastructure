@@ -7,7 +7,7 @@ DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 export VCS_SOURCE
 export VCS_REVISION
 export DATE
-export BASE_IMAGE="ubuntu:noble-20240429"
+export BASE_IMAGE="quay.io/bluebird/base-builder:0.0.1.b1"
 export OPENJDK_17_JDK_VERSION="17.0.11+9-1"
 export MAVEN_MAIN_VERSION="3"
 export MAVEN_MINOR_VERSION="8.8"
@@ -16,5 +16,3 @@ export NODEJS_MAJOR_VERSION="18"
 export NPM_VERSION="10.5.0"
 export YARN_VERSION="1.22.22"
 export NODE_GYP_VERSION="10.1.0"
-export HADOLINT_VERSION="2.12.0"
-export CLOUDSMITH_CLI_VERSION="1.2.3"
