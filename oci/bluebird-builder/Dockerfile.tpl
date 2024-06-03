@@ -22,7 +22,6 @@ RUN curl -fsSL "https://deb.nodesource.com/setup_${NODEJS_MAJOR_VERSION}.x" | ba
     rm -rf /tmp/*
 
 ### Runtime information and not relevant at build time
-ENV JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/maven/bin
 ENV M2_HOME=/opt/maven
 
