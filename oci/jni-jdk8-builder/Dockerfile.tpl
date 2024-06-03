@@ -7,27 +7,32 @@ FROM "${BASE_IMAGE}"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ARG PG_VERSION
-
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008
 RUN apt-get update && \
     apt-get -y install --no-install-recommends build-essential \
       cdbs \
+      cmake \
       debhelper \
       devscripts \
       debsigs \
       dh-autoreconf \
       openjdk-8-jdk="${OPENJDK_8_JDK_VERSION}" \
       patchutils && \
-    apt-get autoremove && \
-    apt-get autoclean && \
-    rm -rf /var/lib/apt/lists/*
+    curl "https://dlcdn.apache.org/maven/maven-${MAVEN_MAIN_VERSION}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz" -o /tmp/maven.tar.gz && \
+    mkdir /opt/maven && \
+    tar xzf /tmp/maven.tar.gz --strip-components=1 -C /opt/maven && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /tmp/*
 
 ENTRYPOINT ["/bin/bash"]
 
 CMD ["-i"]
+
+### Runtime information and not relevant at build time
+ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/maven/bin
+ENV M2_HOME=/opt/maven
 
 LABEL org.opencontainers.image.source="${VCS_SOURCE}" \
       org.opencontainers.image.revision="${VCS_REVISION}" \

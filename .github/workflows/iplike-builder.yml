@@ -11,7 +11,7 @@ jobs:
     if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     container:
-      image: quay.io/bluebird/base-builder:0.0.1.b1
+      image: quay.io/bluebird/base-builder:0.0.2.b3
     steps:
       - name: Create Iplike builder container image
         working-directory: oci/iplike-builder

@@ -1,29 +1,29 @@
 ---
-name: jicmp-oci-builder
-run-name: Create JICMP builder OCI for CICD infrastructure
+name: jni-jdk8-oci-builder
+run-name: Create JNI JDK8 builder OCI for CICD infrastructure
 on:
   push:
     paths:
-      - 'oci/jicmp-builder/**'
+      - 'oci/jni-jdk8-builder/**'
 
 jobs:
-  jicmp-oci-builder:
+  jni-jdk8-oci-builder:
     if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     container:
-      image: quay.io/bluebird/base-builder:0.0.1.b1
+      image: quay.io/bluebird/base-builder:0.0.2.b3
     steps:
-      - name: Create jicmp builder container image
-        working-directory: oci/jicmp-builder
+      - name: Create JNI JDK8 builder container image
+        working-directory: oci/jni-jdk8-builder
         run: make
       - name: Persist OCI
         uses: actions/upload-artifact@v4
         with:
-          name: jicmp-builder-oci
+          name: jni-jdk8-builder-oci
           path: |
             build/*.oci
       - name: Analyze image
-        working-directory: oci/jicmp-builder
+        working-directory: oci/jni-jdk8-builder
         run: |
           make show
           make sbom
@@ -39,7 +39,7 @@ jobs:
         run: |
           make clean
 
-  jicmp-oci-publish:
+  jni-jdk8-oci-publish:
     if: github.ref == 'refs/heads/main'
     runs-on:
       group: Default
@@ -58,11 +58,11 @@ jobs:
           password: ${{ secrets.QUAY_PASSWORD }}
       - uses: actions/checkout@v4
       - name: Publish image
-        working-directory: oci/jicmp-builder
+        working-directory: oci/jni-jdk8-builder
         run: |
           make publish-no-login CONTAINER_REGISTRY_REPO=bluebird CONTAINER_REGISTRY=quay.io BUILD_VERSION_SUFFIX=.b${{ github.run_number }}
       - name: Analyze image
-        working-directory: oci/jicmp-builder
+        working-directory: oci/jni-jdk8-builder
         run: |
           make show
           make sbom
@@ -75,6 +75,6 @@ jobs:
             oci/**/build/*.txt
             oci/**/build/*.json
       - name: Clean the build instance
-        working-directory: oci/jicmp-builder
+        working-directory: oci/jni-jdk8-builder
         run: |
           make clean
