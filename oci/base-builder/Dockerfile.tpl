@@ -22,6 +22,7 @@ RUN apt-get update && \
       make \
       python3-pip \
       ripgrep \
+      ruby \
       shellcheck \
       tree \
       vim \
@@ -39,7 +40,8 @@ RUN apt-get update && \
     # I got the failure "error: externally-managed-environment" pip install cloudsmith-cli
     # The only way I got it working without digging into the details of venv with Docker running with other user contexts was using
     # --break-system-packages ¯\_(ツ)_/¯
-    pip install --break-system-packages --upgrade --no-cache-dir cloudsmith-cli==${CLOUDSMITH_CLI_VERSION}
+    pip install --break-system-packages --upgrade --no-cache-dir cloudsmith-cli==${CLOUDSMITH_CLI_VERSION} && \
+    gem install fpm:1.15.1
 
 ENTRYPOINT ["/bin/bash"]
 
