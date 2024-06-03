@@ -32,16 +32,22 @@ RUN apt-get update && \
     apt-get autoremove && \
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists/* && \
-    curl -fsSL "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-x86_64" -o /usr/local/bin/hadolint && \
-    chmod +x /usr/local/bin/hadolint && \
-    apt-get autoremove && \
-    apt-get autoclean && \
-    rm -rf /var/lib/apt/lists/* && \
+    gem install fpm:1.15.1 && \
     # I got the failure "error: externally-managed-environment" pip install cloudsmith-cli
     # The only way I got it working without digging into the details of venv with Docker running with other user contexts was using
     # --break-system-packages ¯\_(ツ)_/¯
-    pip install --break-system-packages --upgrade --no-cache-dir cloudsmith-cli==${CLOUDSMITH_CLI_VERSION} && \
-    gem install fpm:1.15.1
+    pip install --break-system-packages --upgrade --no-cache-dir cloudsmith-cli==${CLOUDSMITH_CLI_VERSION}
+RUN if [ "$(uname -m)" = "x86_64" ]; then \
+      curl -L "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-x86_64" --output /usr/local/bin/hadolint; \
+    elif [ "$(uname -m)" = "aarch64" ]; then \
+      curl -L "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-arm64" --output /usr/local/bin/hadolint; \
+    elif [ "$(uname -m)" = "arm64" ]; then \
+      curl -L "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-arm64" --output /usr/local/bin/hadolint; \
+    else \
+      echo "Unsupported architecture. Only x86_64, aarch64, arm64 supported." \
+      exit 1; \
+    fi && \
+    chmod +x /usr/local/bin/hadolint
 
 ENTRYPOINT ["/bin/bash"]
 
