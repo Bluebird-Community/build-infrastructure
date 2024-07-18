@@ -11,15 +11,24 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008
 RUN apt-get update && \
-    apt-get -y install --no-install-recommends apt-utils \
+    apt-get -y install --no-install-recommends \
+      apt-utils \
+      build-essential
       bzip2 \
       ca-certificates \
+      cdbs \
+      cmake \
       curl \
+      debhelper \
+      debsigs \
+      devscripts \
+      dh-autoreconf \
       gettext \
       git \
       gnupg \
       lsb-release \
       make \
+      patchutils \
       python3-pip \
       ripgrep \
       ruby \
