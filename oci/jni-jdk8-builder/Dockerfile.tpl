@@ -11,15 +11,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008
 RUN apt-get update && \
-    apt-get -y install --no-install-recommends build-essential \
-      cdbs \
-      cmake \
-      debhelper \
-      devscripts \
-      debsigs \
-      dh-autoreconf \
-      openjdk-8-jdk="${OPENJDK_8_JDK_VERSION}" \
-      patchutils && \
+    apt-get -y install --no-install-recommends \
+      openjdk-8-jdk="${OPENJDK_8_JDK_VERSION}" && \
     curl "https://dlcdn.apache.org/maven/maven-${MAVEN_MAIN_VERSION}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz" -o /tmp/maven.tar.gz && \
     mkdir /opt/maven && \
     tar xzf /tmp/maven.tar.gz --strip-components=1 -C /opt/maven && \

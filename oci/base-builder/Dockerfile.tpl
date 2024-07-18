@@ -13,7 +13,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get update && \
     apt-get -y install --no-install-recommends \
       apt-utils \
-      build-essential
+      build-essential \
       bzip2 \
       ca-certificates \
       cdbs \
@@ -41,11 +41,11 @@ RUN apt-get update && \
     apt-get autoremove && \
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists/* && \
-    gem install fpm:1.15.1 && \
+    gem install "fpm:${FPM_VERSION}" && \
     # I got the failure "error: externally-managed-environment" pip install cloudsmith-cli
     # The only way I got it working without digging into the details of venv with Docker running with other user contexts was using
     # --break-system-packages ¯\_(ツ)_/¯
-    pip install --break-system-packages --upgrade --no-cache-dir cloudsmith-cli==${CLOUDSMITH_CLI_VERSION}
+    pip install --break-system-packages --upgrade --no-cache-dir cloudsmith-cli=="${CLOUDSMITH_CLI_VERSION}"
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
       curl -L "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-x86_64" --output /usr/local/bin/hadolint; \
     elif [ "$(uname -m)" = "aarch64" ]; then \
@@ -66,4 +66,4 @@ LABEL org.opencontainers.image.source="${VCS_SOURCE}" \
   org.opencontainers.image.revision="${VCS_REVISION}" \
   org.opencontainers.image.vendor="Bluebird Community" \
   org.opencontainers.image.authors="ronny@no42.org" \
-  org.opencontainers.image.licenses="AGPLv3"
+  org.opencontainers.image.licenses="MIT"

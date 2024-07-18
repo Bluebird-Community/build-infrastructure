@@ -15,13 +15,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -o /etc/apt/keyrings/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc && \
     echo "deb [signed-by=/etc/apt/keyrings/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
     apt-get update && \
-    apt-get -y install --no-install-recommends build-essential \
-      cdbs \
-      debhelper \
-      devscripts \
-      debsigs \
-      dh-autoreconf \
-      patchutils \
+    apt-get -y install --no-install-recommends \
       postgresql-server-dev-all && \
     apt-get autoremove && \
     apt-get autoclean && \
