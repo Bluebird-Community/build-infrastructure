@@ -1,1 +1,1 @@
-jni-jd8-builder:0.0.3
+jni-jd8-builder:0.0.4

@@ -31,6 +31,7 @@ RUN apt-get update && \
       patchutils \
       python3-pip \
       ripgrep \
+      rsync \
       ruby \
       shellcheck \
       tree \

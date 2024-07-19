@@ -61,4 +61,4 @@ jobs:
           context: ./oci/iplike-builder
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/bluebird/iplike-builder:0.0.3
+          tags: quay.io/bluebird/iplike-builder:0.0.4
