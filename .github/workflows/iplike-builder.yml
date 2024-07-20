@@ -11,7 +11,7 @@ jobs:
   iplike-oci-builder:
     runs-on: ubuntu-latest
     container:
-      image: quay.io/bluebird/base-builder:0.0.4
+      image: quay.io/bluebird/base-builder:0.0.5
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU
