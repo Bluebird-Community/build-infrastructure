@@ -11,7 +11,7 @@ jobs:
   iplike-oci-builder:
     runs-on: ubuntu-latest
     container:
-      image: quay.io/bluebird/base-builder:0.0.5
+      image: quay.io/bluebird/base-builder:0.0.6
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU
@@ -61,4 +61,4 @@ jobs:
           context: ./oci/iplike-builder
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/bluebird/iplike-builder:0.0.4
+          tags: quay.io/bluebird/iplike-builder:0.0.5
