@@ -1,1 +1,1 @@
-base-builder:0.0.5
+base-builder:0.0.6

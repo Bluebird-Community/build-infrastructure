@@ -26,9 +26,11 @@ RUN apt-get update && \
       gettext \
       git \
       gnupg \
+      librrd-dev \
       lsb-release \
       make \
       patchutils \
+      pkg-config \
       python3-pip \
       ripgrep \
       rsync \
