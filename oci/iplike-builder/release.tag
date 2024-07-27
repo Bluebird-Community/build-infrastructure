@@ -1,1 +1,1 @@
-iplike-builder:0.0.5
+iplike-builder:0.0.6

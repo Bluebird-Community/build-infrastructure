@@ -11,7 +11,7 @@ jobs:
   jni-jdk8-oci-builder:
     runs-on: ubuntu-latest
     container:
-      image: quay.io/bluebird/base-builder:0.0.6
+      image: quay.io/bluebird/base-builder:0.0.7
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU
@@ -61,4 +61,4 @@ jobs:
           context: ./oci/jni-jdk8-builder
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/bluebird/jni-jdk8-builder:0.0.5
+          tags: quay.io/bluebird/jni-jdk8-builder:0.0.6
