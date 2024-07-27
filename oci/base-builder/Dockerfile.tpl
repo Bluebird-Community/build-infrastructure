@@ -33,6 +33,7 @@ RUN apt-get update && \
       pkg-config \
       python3-pip \
       ripgrep \
+      rpm \
       rsync \
       ruby \
       shellcheck \
