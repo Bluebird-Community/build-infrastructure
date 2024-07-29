@@ -28,3 +28,7 @@ echo "[ OK ]"
 
 echo -n "Clean container images    "
 docker system prune --all --volumes --force || true
+
+echo - n "Clean OpenNMS install    "
+rm -rf /opt/opennms/*
+echo "[ OK ]"
