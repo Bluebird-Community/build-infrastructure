@@ -5,6 +5,9 @@
 # hadolint ignore=DL3006
 FROM "${BASE_IMAGE}"
 
+ARG GROUP_ID
+ARG USER_ID
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -49,7 +52,10 @@ RUN apt-get update && \
     # I got the failure "error: externally-managed-environment" pip install cloudsmith-cli
     # The only way I got it working without digging into the details of venv with Docker running with other user contexts was using
     # --break-system-packages ¯\_(ツ)_/¯
-    pip install --break-system-packages --upgrade --no-cache-dir cloudsmith-cli=="${CLOUDSMITH_CLI_VERSION}"
+    pip install --break-system-packages --upgrade --no-cache-dir cloudsmith-cli=="${CLOUDSMITH_CLI_VERSION}" && \
+    groupadd -g ${GROUP_ID:-10001} opennms && \
+    useradd -l -g ${GROUP_ID:-10001} -u ${USER_ID:-10001} -m -s /bin/bash -G sudo opennms && \
+    usermod -a -G docker opennms
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
       curl -L "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-x86_64" --output /usr/local/bin/hadolint; \
     elif [ "$(uname -m)" = "aarch64" ]; then \
