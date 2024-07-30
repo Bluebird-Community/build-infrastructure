@@ -1,6 +1,6 @@
 ---
 name: deploy-base
-run-name: Create base builder OCI for CICD infrastructure
+run-name: Create deploy base OCI for CICD infrastructure
 on:
   workflow_dispatch:
   push:
@@ -8,7 +8,7 @@ on:
       - 'oci/deploy-base/**'
 
 jobs:
-  base-oci-builder:
+  deploy-base-oci:
     runs-on: ubuntu-latest
     container:
       image: quay.io/bluebird/base-builder:0.0.8
@@ -58,7 +58,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v5
         with:
-          context: ./oci/depoy-base
+          context: ./oci/deploy-base
           platforms: linux/amd64,linux/arm64
           push: true
           tags: quay.io/bluebird/deploy-base:0.0.1
