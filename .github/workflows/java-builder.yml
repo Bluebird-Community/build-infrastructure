@@ -64,4 +64,4 @@ jobs:
           context: ./oci/java-builder
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/bluebird/java-builder:0.0.4.jdk-${{ matrix.openjdk }}
+          tags: quay.io/bluebird/java-builder:0.0.4.jdk-${{ matrix.openjdk }}.b${{ github.run_number }}
