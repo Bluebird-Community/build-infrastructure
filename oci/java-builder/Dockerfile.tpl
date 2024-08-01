@@ -12,6 +12,7 @@ RUN curl -fsSL "https://deb.nodesource.com/setup_${NODEJS_MAJOR_VERSION}.x" | ba
     apt-get update && \
     apt-get -y install --no-install-recommends openjdk-${OPENJDK_MAJOR}-jdk && \
     apt-get -y install --no-install-recommends nodejs="${NODEJS_MAJOR_VERSION}.*" && \
+    ln -s /usr/lib/jvm/java-1.${OPENJDK_MAJOR}* /usr/lib/jvm/java-${OPENJDK_MAJOR}-openjdk && \
     npm install --global "yarn@${YARN_VERSION}" && \
     yarn global add "node-gyp@${NODE_GYP_VERSION}" && \
     curl "https://dlcdn.apache.org/maven/maven-${MAVEN_MAIN_VERSION}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz" -o /tmp/maven.tar.gz && \
@@ -25,6 +26,7 @@ RUN curl -fsSL "https://deb.nodesource.com/setup_${NODEJS_MAJOR_VERSION}.x" | ba
 ### Runtime information and not relevant at build time
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/maven/bin
 ENV M2_HOME=/opt/maven
+ENV JAVA_HOME=/usr/lib/jvm/java-${OPENJDK_MAJOR}-openjdk
 
 ENTRYPOINT ["/bin/bash"]
 

@@ -11,7 +11,7 @@ jobs:
   deploy-base-oci:
     runs-on: ubuntu-latest
     container:
-      image: quay.io/bluebird/base-builder:0.0.8
+      image: quay.io/bluebird/base-builder:0.0.9.b47
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU
