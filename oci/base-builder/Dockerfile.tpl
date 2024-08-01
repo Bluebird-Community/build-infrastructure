@@ -55,7 +55,9 @@ RUN apt-get update && \
     pip install --break-system-packages --upgrade --no-cache-dir cloudsmith-cli=="${CLOUDSMITH_CLI_VERSION}" && \
     groupadd -g ${GROUP_ID:-10001} opennms && \
     useradd -l -g ${GROUP_ID:-10001} -u ${USER_ID:-10001} -m -s /bin/bash -G sudo opennms && \
-    usermod -a -G docker opennms
+    usermod -a -G docker opennms && \
+    useradd -l -m -s /bin/bash -G sudo cicd && \
+    usermod -a -G docker cicd
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
       curl -L "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-x86_64" --output /usr/local/bin/hadolint; \
     elif [ "$(uname -m)" = "aarch64" ]; then \
