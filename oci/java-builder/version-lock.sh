@@ -7,7 +7,7 @@ DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 export VCS_SOURCE
 export VCS_REVISION
 export DATE
-export BASE_IMAGE="quay.io/bluebird/base-builder:0.0.9.b47"
+export BASE_IMAGE="quay.io/bluebird/base-builder:0.1.0.b49"
 export MAVEN_MAIN_VERSION="3"
 export MAVEN_MINOR_VERSION="8.8"
 export MAVEN_VERSION="${MAVEN_MAIN_VERSION}.${MAVEN_MINOR_VERSION}"
