@@ -40,6 +40,7 @@ RUN apt-get update && \
       rsync \
       ruby \
       shellcheck \
+      sudo \
       tree \
       vim \
       wget \
