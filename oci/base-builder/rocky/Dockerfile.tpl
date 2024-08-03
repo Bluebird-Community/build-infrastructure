@@ -27,6 +27,7 @@ RUN microdnf install -y dnf && \
       rsync \
       ruby \
       ruby-devel \
+      selinux-policy-devel \
       shellcheck \
       sudo \
       tree \
