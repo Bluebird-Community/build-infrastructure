@@ -76,7 +76,7 @@ ENTRYPOINT ["/bin/bash"]
 CMD ["-i"]
 
 LABEL org.opencontainers.image.source="${VCS_SOURCE}" \
-  org.opencontainers.image.revision="${VCS_REVISION}" \
-  org.opencontainers.image.vendor="Bluebird Community" \
-  org.opencontainers.image.authors="ronny@no42.org" \
-  org.opencontainers.image.licenses="MIT"
+      org.opencontainers.image.revision="${VCS_REVISION}" \
+      org.opencontainers.image.vendor="Bluebird Community" \
+      org.opencontainers.image.authors="ronny@no42.org" \
+      org.opencontainers.image.licenses="MIT"

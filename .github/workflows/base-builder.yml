@@ -8,7 +8,10 @@ on:
       - 'oci/base-builder/**'
 
 jobs:
-  base-oci-builder:
+  base-builder:
+    strategy:
+      matrix:
+        distro: [ ubuntu, rocky ]
     runs-on: ubuntu-latest
     container:
       image: quay.io/bluebird/base-builder:0.1.0.b49
@@ -19,7 +22,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Create Dockerfile
-        working-directory: oci/base-builder
+        working-directory: oci/base-builder/${{ matrix.distro }}
         run: make Dockerfile
 
       ## Any other branch just build locally, no docker push
@@ -27,24 +30,24 @@ jobs:
         if: github.ref != 'refs/heads/main'
         uses: docker/build-push-action@v5
         with:
-          context: ./oci/base-builder
+          context: ./oci/base-builder/${{ matrix.distro }}
           # only single arch on branches, because of
           # ERROR: docker exporter does not currently support exporting manifest lists
           platforms: linux/amd64
           push: false
           load: true
-          tags: base-builder:b${{ github.run_number }}
+          tags: base-builder:${{ matrix.distro }}.b${{ github.run_number }}
       - name: Save image as artifact
         if: github.ref != 'refs/heads/main'
-        working-directory: oci/base-builder
-        run: docker image save base-builder:b${{ github.run_number }} -o build/base-builder.oci
+        working-directory: oci/base-builder/${{ matrix.distro }}
+        run: docker image save base-builder:${{ matrix.distro }}.b${{ github.run_number }} -o build/base-builder-${{ matrix.distro }}.oci
       - name: Persist OCI
         if: github.ref != 'refs/heads/main'
         uses: actions/upload-artifact@v4
         with:
-          name: base-builder-oci
+          name: base-builder-oci-${{ matrix.distro }}
           path: |
-            oci/base-builder/build/*.oci
+            oci/base-builder/${{ matrix.distro }}/build/*.oci
 
       ## Main branch with push to registry
       - name: Login to Quay registry
@@ -58,7 +61,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v5
         with:
-          context: ./oci/base-builder
+          context: ./oci/base-builder/${{ matrix.distro }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/bluebird/base-builder:0.1.0.b${{ github.run_number }}
+          tags: quay.io/bluebird/base-builder:${{ matrix.distro }}.0.1.0.b${{ github.run_number }}
