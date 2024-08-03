@@ -14,7 +14,7 @@ jobs:
         distro: [ ubuntu, rocky ]
     runs-on: ubuntu-latest
     container:
-      image: quay.io/bluebird/base-builder:0.1.0.b49
+      image: quay.io/bluebird/base-builder:ubuntu.0.1.0.b53
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU
