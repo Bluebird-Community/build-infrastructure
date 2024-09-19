@@ -4,6 +4,14 @@
     name: vm.swappiness
     value: '5'
     state: present
+    reload: true
+
+- name: Allow user to use JNA icmp sockets
+  ansible.posix.sysctl:
+    name: net.ipv4.ping_group_range
+    value: '0 2147483647'
+    state: present
+    reload: true
 
 - name: Create directory for custom systemd settings
   ansible.builtin.file:
