@@ -7,4 +7,4 @@ DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 export VCS_SOURCE
 export VCS_REVISION
 export DATE
-export BASE_IMAGE="quay.io/bluebird/base-builder:0.1.0.b49"
+export BASE_IMAGE="quay.io/bluebird/base-builder:ubuntu.0.1.1.b1"
