@@ -31,7 +31,7 @@
   tags:
     - system
 
-- name: Set timezone to Europe/Berlin
+- name: Set timezone to UTC
   community.general.timezone:
     name: "{{ timezone }}"
   tags:
