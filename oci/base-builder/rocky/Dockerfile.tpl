@@ -20,6 +20,7 @@ RUN dnf install -y dnf && \
       gettext \
       git \
       gnupg2 \
+      net-snmp-devel \
       patchutils \
       pkgconf-pkg-config \
       python3-pip \

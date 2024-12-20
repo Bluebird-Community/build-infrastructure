@@ -30,6 +30,7 @@ RUN apt-get update && \
       git \
       gnupg \
       librrd-dev \
+      libsnmp-dev \
       lsb-release \
       make \
       patchutils \
