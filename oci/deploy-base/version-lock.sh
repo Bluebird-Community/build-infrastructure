@@ -7,9 +7,9 @@ DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 export VCS_SOURCE
 export VCS_REVISION
 export DATE
-export JDK8_BUILDER_IMAGE="quay.io/bluebird/java-builder:0.1.2.jdk-8.b2"
-export JDK17_BUILDER_IMAGE="quay.io/bluebird/java-builder:0.1.2.jdk-17.b2"
-export BASE_IMAGE="ubuntu:noble-20241118.1"
+export JDK8_BUILDER_IMAGE="quay.io/bluebird/java-builder:rocky.0.1.5.jdk-8.b19"
+export JDK17_BUILDER_IMAGE="quay.io/bluebird/java-builder:rocky.0.1.5.jdk-17.b19"
+export BASE_IMAGE="registry.access.redhat.com/ubi9/ubi-minimal:9.5-1736404155"
 export JICMP_GIT_REPO_URL="https://github.com/Bluebird-Community/jicmp.git"
 export JICMP_VERSION="v3.0.6"
 export JICMP6_GIT_REPO_URL="https://github.com/Bluebird-Community/jicmp6.git"
@@ -22,5 +22,5 @@ export CONFD_BASE_URL="https://github.com/abtreece/confd/releases/download/${CON
 export PROM_JMX_EXPORTER_VERSION="1.0.1"
 export PROM_JMX_EXPORTER_URL="https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/${PROM_JMX_EXPORTER_VERSION}/jmx_prometheus_javaagent-${PROM_JMX_EXPORTER_VERSION}.jar"
 export JAVA_MAJOR_VERSION="17"
-export JAVA_PKG="openjdk-${JAVA_MAJOR_VERSION}-jdk-headless"
+export JAVA_PKG="java-${JAVA_MAJOR_VERSION}-openjdk-devel"
 export JAVA_HOME="/usr/lib/jvm/java-17-openjdk"

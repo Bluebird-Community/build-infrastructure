@@ -11,8 +11,9 @@ ARG USER_ID
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3040,DL3041
-RUN dnf install -y dnf && \
-    dnf groupinstall -y 'Development Tools' && \
+RUN dnf groupinstall -y 'Development Tools' --exclude javapackages-filesystem --exclude jna && \
+    dnf install -y 'dnf-command(config-manager)' && \
+    dnf config-manager --set-enabled crb && \
     dnf install -y epel-release && \
     dnf install -y bzip2 \
       ca-certificates \
@@ -24,6 +25,8 @@ RUN dnf install -y dnf && \
       patchutils \
       pkgconf-pkg-config \
       python3-pip \
+      rrdtool-${RRDTOOL_VERSION} \
+      rrdtool-devel \
       rsync \
       ruby \
       ruby-devel \

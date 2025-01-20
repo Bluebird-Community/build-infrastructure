@@ -43,29 +43,24 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # We need to install inetutils-ping to get the JNI Pinger to work.
 # The JNI Pinger is tested with getprotobyname("icmp") and it is null if inetutils-ping is missing.
-RUN apt-get update && \
-    env DEBIAN_FRONTEND="noninteractive" apt-get install --no-install-recommends -y \
-        ca-certificates \
-        inetutils-ping \
-        curl \
+# hadolint ignore=DL3040,DL3041
+RUN microdnf -y install \
+        iputils \
         ${JAVA_PKG} \
-        openssh-client \
-        rrdtool="${RRDTOOL_VERSION}" \
+        openssh-clients \
+        rrdtool-${RRDTOOL_VERSION} \
         rsync \
-        uuid-runtime && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+        tar \
+        uuid && \
+   microdnf clean all
 
 # Install confd and set Java home directory
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
       curl -L "${CONFD_BASE_URL}/confd-${CONFD_VERSION}-linux-amd64.tar.gz" | tar xvz -C /usr/bin; \
-      ln -s /usr/lib/jvm/java-17-openjdk* /usr/lib/jvm/java-17-openjdk; \
     elif [ "$(uname -m)" = "armv7l" ]; then \
       curl -L "${CONFD_BASE_URL}/confd-${CONFD_VERSION}-linux-arm7.tar.gz" | tar xvz -C /usr/bin; \
-      ln -s /usr/lib/jvm/java-17-openjdk* /usr/lib/jvm/java-17-openjdk; \
     else \
       curl -L "${CONFD_BASE_URL}/confd-${CONFD_VERSION}-linux-arm64.tar.gz" | tar xvz -C /usr/bin; \
-      ln -s /usr/lib/jvm/java-17-openjdk* /usr/lib/jvm/java-17-openjdk; \
     fi && \
     mkdir -p /opt/prom-jmx-exporter && \
     curl "${PROM_JMX_EXPORTER_URL}" --output /opt/prom-jmx-exporter/jmx_prometheus_javaagent.jar
