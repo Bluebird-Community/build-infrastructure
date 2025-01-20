@@ -11,8 +11,7 @@ ARG USER_ID
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3040,DL3041
-RUN dnf install -y dnf && \
-    dnf groupinstall -y 'Development Tools' && \
+RUN dnf groupinstall -y 'Development Tools' --exclude javapackages-filesystem --exclude jna && \
     dnf install -y epel-release && \
     dnf install -y bzip2 \
       ca-certificates \

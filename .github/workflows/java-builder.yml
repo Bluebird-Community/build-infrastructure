@@ -11,7 +11,7 @@ jobs:
   java-oci-builder:
     strategy:
       matrix:
-        distro: [ ubuntu ]
+        distro: [ ubuntu, rocky ]
         openjdk: [ 8, 11, 17, 21 ]
     runs-on: ubuntu-latest
     container:
@@ -37,16 +37,16 @@ jobs:
           platforms: linux/amd64
           push: false
           load: true
-          tags: java-builder:b${{ github.run_number }}
+          tags: java-builder:${{ matrix.distro }}.jdk-${{ matrix.openjdk }}.b${{ github.run_number }}
       - name: Save image as artifact
         if: github.ref != 'refs/heads/main'
-        working-directory: oci/java-builder
-        run: docker image save java-builder:${{ matrix.distro }}.jdk-${{ matrix.openjdk }}.b${{ github.run_number }} -o build/java-builder.oci
+        working-directory: oci/java-builder/${{ matrix.distro }}
+        run: docker image save java-builder:${{ matrix.distro }}.jdk-${{ matrix.openjdk }}.b${{ github.run_number }} -o build/java-builder-${{ matrix.distro }}.oci
       - name: Persist OCI
         if: github.ref != 'refs/heads/main'
         uses: actions/upload-artifact@v4
         with:
-          name: java-builder-oci-${{ matrix.distro }}
+          name: java-builder-oci-${{ matrix.distro }}.jdk-${{ matrix.openjdk }}
           path: |
             oci/java-builder/${{ matrix.distro }}/build/*.oci
 
@@ -65,4 +65,4 @@ jobs:
           context: ./oci/java-builder
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/bluebird/java-builder:${{ matrix.distro }}.0.1.3.jdk-${{ matrix.openjdk }}.b${{ github.run_number }}
+          tags: quay.io/bluebird/java-builder:${{ matrix.distro }}.0.1.4.jdk-${{ matrix.openjdk }}.b${{ github.run_number }}
