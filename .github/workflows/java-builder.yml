@@ -11,6 +11,7 @@ jobs:
   java-oci-builder:
     strategy:
       matrix:
+        distro: [ ubuntu ]
         openjdk: [ 8, 11, 17, 21 ]
     runs-on: ubuntu-latest
     container:
@@ -22,7 +23,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Create Dockerfile
-        working-directory: oci/java-builder
+        working-directory: oci/java-builder/${{ matrix.distro }}
         run: make Dockerfile OPENJDK_MAJOR=${{ matrix.openjdk }}
 
       ## Any other branch just build locally, no docker push
@@ -30,7 +31,7 @@ jobs:
         if: github.ref != 'refs/heads/main'
         uses: docker/build-push-action@v5
         with:
-          context: ./oci/java-builder
+          context: ./oci/java-builder/${{ matrix.distro }}
           # only single arch on branches, because of
           # ERROR: docker exporter does not currently support exporting manifest lists
           platforms: linux/amd64
@@ -40,14 +41,14 @@ jobs:
       - name: Save image as artifact
         if: github.ref != 'refs/heads/main'
         working-directory: oci/java-builder
-        run: docker image save java-builder:jdk-${{ matrix.openjdk }}.b${{ github.run_number }} -o build/java-builder.oci
+        run: docker image save java-builder:${{ matrix.distro }}.jdk-${{ matrix.openjdk }}.b${{ github.run_number }} -o build/java-builder.oci
       - name: Persist OCI
         if: github.ref != 'refs/heads/main'
         uses: actions/upload-artifact@v4
         with:
-          name: java-builder-oci
+          name: java-builder-oci-${{ matrix.distro }}
           path: |
-            oci/java-builder/build/*.oci
+            oci/java-builder/${{ matrix.distro }}/build/*.oci
 
       ## Main branch with push to registry
       - name: Login to Quay registry
@@ -64,4 +65,4 @@ jobs:
           context: ./oci/java-builder
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/bluebird/java-builder:0.1.3.jdk-${{ matrix.openjdk }}.b${{ github.run_number }}
+          tags: quay.io/bluebird/java-builder:${{ matrix.distro }}.0.1.3.jdk-${{ matrix.openjdk }}.b${{ github.run_number }}
