@@ -48,6 +48,7 @@ RUN microdnf -y install \
         iputils \
         ${JAVA_PKG} \
         openssh-clients \
+        ncurses \
         rrdtool-${RRDTOOL_VERSION} \
         rsync \
         tar \
