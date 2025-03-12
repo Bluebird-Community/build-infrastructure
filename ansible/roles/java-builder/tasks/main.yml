@@ -53,3 +53,23 @@
     mode: "0644"
   tags:
     - java
+
+- name: Create Maven Home
+  ansible.builtin.file:
+    path: /home/cicd/.m2
+    state: directory
+    mode: "0755"
+    owner: cicd
+    group: cicd
+  tags:
+    - maven
+
+- name: Configure Maven Mirror
+  ansible.builtin.template:
+    src: settings.xml.j2
+    dest: /home/cicd/.m2/settings.xml
+    mode: "0640"
+    owner: cicd
+    group: cicd
+  tags:
+    - maven

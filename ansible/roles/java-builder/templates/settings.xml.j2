@@ -1,0 +1,17 @@
+<settings>
+    <servers>
+        <server>
+            <id>cloudsmith</id>
+            <username>${env.MAVEN_USERNAME}</username>
+            <password>${env.MAVEN_PASSWORD}</password>
+        </server>
+    </servers>
+    <mirrors>
+        <mirror>
+            <id>{{ m2_mirror_id }}</id>
+            <name>{{ m2_mirror_name }}</name>
+            <url>{{ m2_mirror_url }}</url>
+            <mirrorOf>*</mirrorOf>
+        </mirror>
+    </mirrors>
+</settings>

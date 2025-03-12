@@ -9,3 +9,7 @@ openjdk_maven_version: "{{ openjdk_maven_main_version }}.8.8"
 openjdk_maven_url: "https://dlcdn.apache.org/maven/maven-{{ openjdk_maven_main_version }}/{{ openjdk_maven_version }}/binaries/apache-maven-{{ openjdk_maven_version }}-bin.tar.gz"
 openjdk_maven_checksum_url: "https://downloads.apache.org/maven/maven-{{ openjdk_maven_main_version }}/{{ openjdk_maven_version }}/binaries/apache-maven-{{ openjdk_maven_version }}-bin.tar.gz.sha512"
 openjdk_maven_home: /opt/maven
+
+m2_mirror_id: mvn.cdn.eu-central-1
+m2_mirror_name: Maven Cache in EU Central
+m2_mirror_url: https://mvn.cdn.eu-central-1.bluebirdlabs.tech/upstream
