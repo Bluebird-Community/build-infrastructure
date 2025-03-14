@@ -1,0 +1,30 @@
+---
+- name: Install Reposilite Maven CDN
+  ansible.builtin.file:
+    path: "{{ reposilite_cdn_appdir }}"
+    state: directory
+    mode: "0750"
+  tags:
+    - maven-cdn
+
+- name: Create Reposilite CDN compose file
+  ansible.builtin.template:
+    src: compose.yml.j2
+    dest: "{{ reposilite_cdn_appdir }}/compose.yml"
+    mode: "0640"
+  notify:
+    - Restart reposilite
+  tags:
+    - maven-cdn
+
+- name: Configure Maven CDN server
+  ansible.builtin.template:
+    src: shared.configuration.json.j2
+    dest: "{{ reposilite_cdn_appdir }}/{{ reposilite_cdn_config }}"
+    mode: "0640"
+    owner: "{{ reposilite_user }}"
+    group: "{{ reposilite_group }}"
+  notify:
+    - Restart reposilite
+  tags:
+    - maven-cdn

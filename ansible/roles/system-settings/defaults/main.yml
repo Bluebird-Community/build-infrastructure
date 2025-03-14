@@ -6,8 +6,8 @@ system_arch: amd64
 system_os: linux
 
 dns:
-  primary: 1.1.1.1
-  secondary: 8.8.8.8
+  primary: 193.110.81.0
+  secondary: 185.253.5.0
 
 cicd_user: cicd
 cicd_group: cicd

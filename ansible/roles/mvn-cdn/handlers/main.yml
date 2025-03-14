@@ -1,0 +1,8 @@
+---
+- name: reload systemd
+  ansible.builtin.command: systemctl daemon-reload
+
+- name: Restart reposilite
+  ansible.builtin.service:
+    name: docker-compose@reposilite
+    state: restarted

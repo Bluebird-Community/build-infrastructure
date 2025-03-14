@@ -1,0 +1,47 @@
+---
+- name: Add Docker repository key to a keyring file
+  ansible.builtin.apt_key:
+    url: "{{ docker_repo_key_url }}"
+    keyring: "{{ docker_repo_keyring_file }}"
+  tags:
+    - docker
+    - repository
+
+- name: Install Docker repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ docker_os_arch }} signed-by={{ docker_repo_keyring_file }}] {{ docker_repo_url }} {{ docker_os_version_codename }} {{ docker_release }}"
+    state: present
+    update_cache: true
+  tags:
+    - docker
+    - repository
+
+- name: Install Docker engine
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+  tags:
+    - docker
+
+- name: Add cicd user to group docker
+  ansible.builtin.user:
+    name: "{{ cicd_user }}"
+    groups: docker
+    append: true
+  tags:
+    - docker
+
+- name: Add docker compose systemd unit
+  copy:
+    src: "docker-compose@.service"
+    dest: "/etc/systemd/system/docker-compose@.service"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+  - reload systemd
+  tags: [ 'docker-compose' ]

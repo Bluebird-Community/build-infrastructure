@@ -4,14 +4,18 @@
   become: true
   roles:
     - system-settings
+    - docker-engine
     - prometheus.prometheus.node_exporter
     - monitoring
     - container-builder
-    - iplike-builder
     - java-builder
-    - jicmp-builder
-    - jrrd2-builder
     - nodejs-builder
     - vm-builder
     - opennms
-    - sonarcloud
+
+- name: Maven CDN
+  hosts: mvn_cdn
+  become: true
+  roles:
+    - docker-engine
+    - mvn-cdn

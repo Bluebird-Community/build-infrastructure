@@ -1,0 +1,24 @@
+---
+services:
+  reposilite:
+    image: {{ reposilite_oci_tag }}
+    environment:
+      PUID: {{ reposilite_user }}
+      PGID: {{ reposilite_group }}
+      JAVA_OPTS: -Xmx{{ reposilite_java_heap_max }} ${JAVA_COMPOSE_OPTS}
+      REPOSILITE_OPTS: --port {{ reposilite_port }} {{ reposilite_cdn_options }}
+    volumes:
+      - ./data:/app/data
+      - ./shared.configuration.json:/shared.configuration.json
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    labels:
+      traefik.enable: true
+      traefik.docker.network: public-ingress
+      traefik.http.middlewares.reposilite.headers.sslredirect: 'true'
+      traefik.http.middlewares.redirect.redirectscheme.scheme: https
+      traefik.http.routers.reposilite.rule: Host(`{{ reposilite_region_url }}`) || Host(`{{ reposilite_server_url }}`)
+      traefik.http.routers.reposilite.entrypoints: websecure
+      traefik.http.routers.reposilite.tls.certresolver: myresolver
+      traefik.http.services.reposilite.loadbalancer.server.port: {{ reposilite_port }}
