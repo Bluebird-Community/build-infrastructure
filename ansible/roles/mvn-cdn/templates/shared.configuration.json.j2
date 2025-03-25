@@ -14,14 +14,6 @@
             "userType": "PERSISTENT"
         }
     },
-    "frontend": {
-        "id": "{{ reposilite_frontend_cdn_id }}",
-        "title": "{{ reposilite_frontend_cdn_title }}",
-        "description": "{{ reposilite_frontend_cdn_description }}",
-        "organizationWebsite": "{{ reposilite_frontend_cdn_org_website }}",
-        "organizationLogo": "{{ reposilite_frontend_cdn_org_logo }}",
-        "icpLicense": ""
-    },
     "maven": {
         "repositories": [
             {
@@ -40,7 +32,7 @@
                 "proxied": [
                     {
                         "reference": "maven-central",
-                        "store": true,
+                        "store": false,
                         "allowedGroups": [],
                         "allowedExtensions": [
                             ".jar",
@@ -60,11 +52,12 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     },
                     {
                         "reference": "atlassian-public",
-                        "store": true,
+                        "store": false,
                         "allowedGroups": [],
                         "allowedExtensions": [
                             ".jar",
@@ -80,11 +73,12 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     },
                     {
                         "reference": "codelibs",
-                        "store": true,
+                        "store": false,
                         "allowedGroups": [],
                         "allowedExtensions": [
                             ".jar",
@@ -100,11 +94,12 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     },
                     {
                         "reference": "jaspersoft-third-party-ce",
-                        "store": true,
+                        "store": false,
                         "allowedGroups": [],
                         "allowedExtensions": [
                             ".jar",
@@ -120,11 +115,12 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     },
                     {
                         "reference": "opennms-3rdparty",
-                        "store": true,
+                        "store": false,
                         "allowedGroups": [],
                         "allowedExtensions": [
                             ".jar",
@@ -140,11 +136,12 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     },
                     {
                         "reference": "opennms-repo",
-                        "store": true,
+                        "store": false,
                         "allowedGroups": [],
                         "allowedExtensions": [
                             ".jar",
@@ -160,11 +157,12 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     },
                     {
                         "reference": "shibboleth-releases",
-                        "store": true,
+                        "store": false,
                         "allowedGroups": [],
                         "allowedExtensions": [
                             ".jar",
@@ -180,11 +178,12 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     },
                     {
                         "reference": "vaadin-addons",
-                        "store": true,
+                        "store": false,
                         "allowedGroups": [],
                         "allowedExtensions": [
                             ".jar",
@@ -200,11 +199,12 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     },
                     {
                         "reference": "confluent.io",
-                        "store": true,
+                        "store": false,
                         "allowedGroups": [],
                         "allowedExtensions": [
                             ".jar",
@@ -220,11 +220,12 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     },
                     {
-                        "reference": "bluebird-bbo-third-party",
-                        "store": true,
+                        "reference": "bluebird-releases",
+                        "store": false,
                         "allowedGroups": [],
                         "allowedExtensions": [
                             ".jar",
@@ -240,7 +241,29 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
+                    },
+                    {
+                        "reference": "bluebird-snapshots",
+                        "store": false,
+                        "allowedGroups": [],
+                        "allowedExtensions": [
+                            ".jar",
+                            ".war",
+                            ".pom",
+                            ".xml",
+                            ".module",
+                            ".md5",
+                            ".sha1",
+                            ".sha256",
+                            ".sha512",
+                            ".asc"
+                        ],
+                        "connectTimeout": 3,
+                        "readTimeout": 15,
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     }
                 ]
             },
@@ -259,7 +282,7 @@
                 "metadataMaxAge": 1440,
                 "proxied": [
                     {
-                        "reference": "https://repo1.maven.apache.org/maven2/",
+                        "reference": "https://repo.maven.apache.org/maven2/",
                         "store": true,
                         "allowedGroups": [],
                         "allowedExtensions": [
@@ -280,7 +303,8 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     }
                 ]
             },
@@ -316,7 +340,8 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     }
                 ]
             },
@@ -352,7 +377,8 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     }
                 ]
             },
@@ -388,7 +414,8 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     }
                 ]
             },
@@ -424,7 +451,8 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     }
                 ]
             },
@@ -460,7 +488,8 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     }
                 ]
             },
@@ -496,7 +525,8 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     }
                 ]
             },
@@ -532,7 +562,8 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     }
                 ]
             },
@@ -568,14 +599,15 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     }
                 ]
             },
             {
-                "id": "bluebird-bbo-third-party",
+                "id": "bluebird-releases",
                 "visibility": "PUBLIC",
-                "redeployment": true,
+                "redeployment": false,
                 "preserveSnapshots": false,
                 "storageProvider": {
                     "type": "fs",
@@ -587,7 +619,7 @@
                 "metadataMaxAge": 1440,
                 "proxied": [
                     {
-                        "reference": "https://dl.cloudsmith.io/public/bluebird/bbo-third-party/maven",
+                        "reference": "https://repo.maven.bluebirdops.org/releases",
                         "store": true,
                         "allowedGroups": [],
                         "allowedExtensions": [
@@ -604,15 +636,61 @@
                         ],
                         "connectTimeout": 3,
                         "readTimeout": 15,
-                        "httpProxy": ""
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
+                    }
+                ]
+            },
+            {
+                "id": "bluebird-snapshots",
+                "visibility": "PUBLIC",
+                "redeployment": true,
+                "preserveSnapshots": false,
+                "storageProvider": {
+                    "type": "fs",
+                    "quota": "100%",
+                    "mount": "",
+                    "maxResourceLockLifetimeInSeconds": 60
+                },
+                "storagePolicy": "PRIORITIZE_UPSTREAM_METADATA",
+                "metadataMaxAge": 1440,
+                "proxied": [
+                    {
+                        "reference": "https://repo.maven.bluebirdops.org/snapshots",
+                        "store": true,
+                        "allowedGroups": [],
+                        "allowedExtensions": [
+                            ".jar",
+                            ".war",
+                            ".pom",
+                            ".xml",
+                            ".module",
+                            ".md5",
+                            ".sha1",
+                            ".sha256",
+                            ".sha512",
+                            ".asc"
+                        ],
+                        "connectTimeout": 3,
+                        "readTimeout": 15,
+                        "httpProxy": "",
+                        "authenticatedFetchingOnly": false
                     }
                 ]
             }
         ]
     },
+    "frontend": {
+        "id": "{{ reposilite_frontend_cdn_id }}",
+        "title": "{{ reposilite_frontend_cdn_title }}",
+        "description": "{{ reposilite_frontend_cdn_description }}",
+        "organizationWebsite": "{{ reposilite_frontend_cdn_org_website }}",
+        "organizationLogo": "{{ reposilite_frontend_cdn_org_logo }}",
+        "icpLicense": ""
+    },
     "statistics": {
         "enabled": true,
-        "resolvedRequestsInterval": "MONTHLY"
+        "resolvedRequestsInterval": "WEEKLY"
     },
     "web": {
         "forwardedIp": "X-Forwarded-For"

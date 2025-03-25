@@ -1,5 +1,5 @@
 ---
-reposilite_version: 3.5.22
+reposilite_version: 3.5.23
 reposilite_user: 977
 reposilite_group: 977
 reposilite_port: 8080
@@ -7,9 +7,9 @@ reposilite_oci_tag: "ghcr.io/dzikoysk/reposilite:{{ reposilite_version }}"
 reposilite_cdn_config: "shared.configuration.json"
 reposilite_cdn_options: "--shared-configuration=/{{ reposilite_cdn_config }}"
 reposilite_java_heap_max: "256M"
-reposilite_cdn_appdir: "/opt/docker/reposilite"
-reposilite_server_url: "mvn1.cdn.eu-central-1.bluebirdlabs.tech"
-reposilite_region_url: "mvn.cdn.eu-central-1.bluebirdlabs.tech"
+reposilite_cdn_appdir: "/etc/docker/reposilite"
+reposilite_server_url: "mvn1.cdn.eu-central-1.bluebirdops.org"
+reposilite_region_url: "mvn.cdn.eu-central-1.bluebirdops.org"
 reposilite_frontend_cdn_id: "mvn.cdn.eu-central-1"
 reposilite_frontend_cdn_title: "🇪🇺 Maven CDN in EU Central"
 reposilite_frontend_cdn_description: "Maven CDN Server: {{ reposilite_server_url }}"
