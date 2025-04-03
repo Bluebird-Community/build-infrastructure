@@ -3,3 +3,4 @@ gh_actions_home: /opt/actions-runner
 gh_actions_runner_working_directory: "{{ gh_actions_home }}"
 gh_org: Bluebird-Community
 gh_host: cicd-01
+cicd_user: cicd

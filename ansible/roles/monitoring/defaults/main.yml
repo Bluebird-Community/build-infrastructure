@@ -1,5 +1,4 @@
 ---
-monitoring_node_exporter_version: 1.7.0
 monitoring_node_exporter_textfile_dir: /var/lib/node_exporter/textfile_collector
 
 monitoring_pmacctd_interface_index: 2

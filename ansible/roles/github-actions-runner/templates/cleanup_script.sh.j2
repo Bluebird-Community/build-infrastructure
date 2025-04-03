@@ -17,18 +17,18 @@ else
 fi
 
 echo -n "Clean Maven home:         "
-rm -rf "${HOME}/.m2/repository/*"
+rm -rf "${HOME}"/.m2/repository/*
 echo "[ OK ]"
 
 echo -n "Clean Node caches:        "
-rm -rf "${HOME}/.cache/yarn"
-rm -rf "${HOME}/.cache/node-gyp"
-rm -rf "${HOME}/.cache/npm"
+rm -rf "${HOME}"/.cache/yarn
+rm -rf "${HOME}"/.cache/node-gyp
+rm -rf "${HOME}"/.cache/npm
 echo "[ OK ]"
 
 echo -n "Clean container images    "
 docker system prune --all --volumes --force || true
 
-echo - n "Clean OpenNMS install    "
+echo -n "Clean OpenNMS install     "
 rm -rf /opt/opennms/*
 echo "[ OK ]"

@@ -21,10 +21,20 @@
     group: root
     mode: "0750"
 
-- name: Increase systems open file limits
+- name: Increase systems open file limits in systemd
   ansible.builtin.template:
     src: systemd/10-filelimit.conf.j2
     dest: "/etc/systemd/system.conf.d/10-filelimit.conf"
+    mode: "0640"
+    owner: root
+    group: root
+  tags:
+    - system
+
+- name: Increase systems open file limits for users
+  ansible.builtin.template:
+    src: limits.d/file-limits.conf.j2
+    dest: "/etc/security/limits.d/file-limits.conf"
     mode: "0640"
     owner: root
     group: root
