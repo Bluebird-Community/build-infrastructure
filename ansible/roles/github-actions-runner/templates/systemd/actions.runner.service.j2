@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 ExecStart={{ gh_actions_runner_working_directory }}/runsvc.sh
-Environment ACTIONS_RUNNER_HOOK_JOB_STARTED=/opt/actions-runner/cleanup_script.sh
-Environment ACTIONS_RUNNER_HOOK_JOB_COMPLETED=/opt/actions-runner/cleanup_script.sh
+Environment="ACTIONS_RUNNER_HOOK_JOB_STARTED=/opt/actions-runner/cleanup_script.sh"
+Environment="ACTIONS_RUNNER_HOOK_JOB_COMPLETED=/opt/actions-runner/cleanup_script.sh"
 User={{ cicd_user }}
 WorkingDirectory={{ gh_actions_runner_working_directory }}
 KillMode=process
