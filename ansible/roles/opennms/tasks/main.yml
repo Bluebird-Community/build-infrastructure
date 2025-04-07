@@ -43,7 +43,7 @@
       - jrrd2
       - debhelper
       - devscripts
-      - r-base
+      - fakeroot
   tags:
     - build-dependencies
     - debian-packages
