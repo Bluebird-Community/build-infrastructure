@@ -61,4 +61,4 @@ jobs:
           context: ./oci/deploy-base
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/bluebird/deploy-base:2.0.0.b${{ github.run_number }}
+          tags: quay.io/bluebird/deploy-base:2.0.1.b${{ github.run_number }}
