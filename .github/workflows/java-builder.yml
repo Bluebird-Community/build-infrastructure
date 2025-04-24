@@ -15,7 +15,7 @@ jobs:
         openjdk: [ 8, 11, 17, 21 ]
     runs-on: ubuntu-latest
     container:
-      image: quay.io/bluebird/base-builder:ubuntu.0.1.7.b16
+      image: quay.io/bluebird/base-builder:ubuntu.0.1.7.b18
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU

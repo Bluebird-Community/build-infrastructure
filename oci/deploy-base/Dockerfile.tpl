@@ -52,6 +52,7 @@ RUN microdnf -y install \
         rrdtool-${RRDTOOL_VERSION} \
         rsync \
         tar \
+        tzdata \
         uuid && \
    microdnf clean all
 
