@@ -14,6 +14,21 @@
       "userType": "PERSISTENT"
     }
   },
+  "frontend": {
+    "id": "{{ reposilite_frontend_cdn_id }}",
+    "title": "{{ reposilite_frontend_cdn_title }}",
+    "description": "{{ reposilite_frontend_cdn_description }}",
+    "organizationWebsite": "{{ reposilite_frontend_cdn_org_website }}",
+    "organizationLogo": "{{ reposilite_frontend_cdn_org_logo }}",
+    "icpLicense": ""
+  },
+  "web": {
+    "forwardedIp": "X-Forwarded-For"
+  },
+  "statistics": {
+    "enabled": true,
+    "resolvedRequestsInterval": "WEEKLY"
+  },
   "maven": {
     "repositories": [
       {
@@ -264,6 +279,9 @@
             "readTimeout": 15,
             "httpProxy": "",
             "authenticatedFetchingOnly": false
+          },
+          {
+            "reference": "restlet-talend"
           }
         ]
       },
@@ -677,22 +695,18 @@
             "authenticatedFetchingOnly": false
           }
         ]
+      },
+      {
+        "id": "restlet-talend",
+        "visibility": "PUBLIC",
+        "metadataMaxAge": 1440,
+        "proxied": [
+          {
+            "reference": "https://maven.restlet.talend.com/",
+            "store": true
+          }
+        ]
       }
     ]
-  },
-  "frontend": {
-    "id": "{{ reposilite_frontend_cdn_id }}",
-    "title": "{{ reposilite_frontend_cdn_title }}",
-    "description": "{{ reposilite_frontend_cdn_description }}",
-    "organizationWebsite": "{{ reposilite_frontend_cdn_org_website }}",
-    "organizationLogo": "{{ reposilite_frontend_cdn_org_logo }}",
-    "icpLicense": ""
-  },
-  "statistics": {
-    "enabled": true,
-    "resolvedRequestsInterval": "WEEKLY"
-  },
-  "web": {
-    "forwardedIp": "X-Forwarded-For"
   }
 }
