@@ -65,7 +65,8 @@ RUN if [ "$(uname -m)" = "x86_64" ]; then \
       curl -L "${CONFD_BASE_URL}/confd-${CONFD_VERSION}-linux-arm64.tar.gz" | tar xvz -C /usr/bin; \
     fi && \
     mkdir -p /opt/prom-jmx-exporter && \
-    curl "${PROM_JMX_EXPORTER_URL}" --output /opt/prom-jmx-exporter/jmx_prometheus_javaagent.jar
+    curl "${PROM_JMX_EXPORTER_URL}" --output /opt/prom-jmx-exporter/jmx_prometheus_javaagent.jar && \
+    chown -R 10001:0 /opt/prom-jmx-exporter
 
 # Install JICMP
 RUN mkdir -p /usr/lib/jni
