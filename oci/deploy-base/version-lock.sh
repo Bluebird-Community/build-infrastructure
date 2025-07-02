@@ -9,7 +9,7 @@ export VCS_REVISION
 export DATE
 export JDK8_BUILDER_IMAGE="quay.io/bluebird/java-builder:rocky.0.1.5.jdk-8.b21"
 export JDK17_BUILDER_IMAGE="quay.io/bluebird/java-builder:rocky.0.1.5.jdk-17.b21"
-export BASE_IMAGE="registry.access.redhat.com/ubi9/ubi-minimal:9.5-1742914212"
+export BASE_IMAGE="registry.access.redhat.com/ubi9/ubi-minimal:9.6-1751286687"
 export JICMP_GIT_REPO_URL="https://github.com/Bluebird-Community/jicmp.git"
 export JICMP_VERSION="v3.0.7"
 export JICMP6_GIT_REPO_URL="https://github.com/Bluebird-Community/jicmp6.git"
