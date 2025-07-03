@@ -73,7 +73,9 @@ WORKDIR /opt/prom-jmx-exporter
 RUN curl -L "${PROM_JMX_EXPORTER_URL}" --output ./jmx_prometheus_javaagent.jar && \
     echo "${PROM_JMX_EXPORTER_SHA256} jmx_prometheus_javaagent.jar" > jmx_prometheus_javaagent.jar.sha256 && \
     sha256sum -c /opt/prom-jmx-exporter/jmx_prometheus_javaagent.jar.sha256 && \
-    chown -R 10001:0 /opt/prom-jmx-exporter
+    chown -R 10001:0 /opt/prom-jmx-exporter && \
+    chmod 2775 /opt/prom-jmx-exporter && \
+    chmod 0664 /opt/prom-jmx-exporter/*
 
 # Install JICMP
 RUN mkdir -p /usr/lib/jni
