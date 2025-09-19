@@ -7,7 +7,7 @@ FROM "${BASE_IMAGE}"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# hadolint ignore=DL3008
+# hadolint ignore=DL3008,DL3041
 RUN curl -fsSL "https://rpm.nodesource.com/setup_${NODEJS_MAJOR_VERSION}.x" | bash - && \
     dnf -y install nodejs-${NODEJS_MAJOR_VERSION}.* \
                    java-${SET_OPENJDK_MAJOR}-devel && \
