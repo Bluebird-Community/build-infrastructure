@@ -77,6 +77,17 @@ RUN curl -L "${PROM_JMX_EXPORTER_URL}" --output ./jmx_prometheus_javaagent.jar &
     chmod 2775 /opt/prom-jmx-exporter && \
     chmod 0664 /opt/prom-jmx-exporter/*
 
+RUN mkdir -p /opt/pyroscope
+
+WORKDIR /opt/pyroscope
+
+RUN curl -L "${PYROSCOPE_URL}" --output ./pyroscope.jar && \
+    echo "${PYROSCOPE_SHA256} pyroscope.jar" > ./pyroscope.jar.sha256 && \
+    sha256sum -c ./pyroscope.jar.sha256 && \
+    chown -R 10001:0 /opt/pyroscope && \
+    chmod 2775 /opt/pyroscope && \
+    chmod 0664 /opt/pyroscope/*
+
 # Install JICMP
 RUN mkdir -p /usr/lib/jni
 COPY --from=jdk8-builder /usr/src/jicmp/.libs/libjicmp.la /usr/lib/jni/
@@ -92,8 +103,6 @@ COPY --from=jdk8-builder /usr/src/jicmp6/jicmp6.jar /usr/share/java
 COPY --from=jdk17-builder /usr/src/jrrd2/dist/jrrd2-api-*.jar /usr/share/java/jrrd2.jar
 COPY --from=jdk17-builder /usr/src/jrrd2/dist/libjrrd2.so /usr/lib64/libjrrd2.so
 
-# Prevent setup prompt
-ENV DEBIAN_FRONTEND=noninteractive
 ENV JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
 
 LABEL org.opencontainers.image.created="${BUILD_DATE}" \
