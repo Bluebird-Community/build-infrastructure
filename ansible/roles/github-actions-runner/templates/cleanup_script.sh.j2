@@ -32,3 +32,7 @@ docker system prune --all --volumes --force || true
 echo -n "Clean OpenNMS install     "
 rm -rf /opt/opennms/*
 echo "[ OK ]"
+
+echo -n "Clean workspace directory "
+rm -rf /opt/actions-runner/_work/opennms/opennms/*
+echo "[ OK ]"
