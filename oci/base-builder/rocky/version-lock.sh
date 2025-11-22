@@ -7,8 +7,8 @@ DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 export VCS_SOURCE
 export VCS_REVISION
 export DATE
-export BASE_IMAGE="quay.io/rockylinux/rockylinux:9.6.20250531-ubi"
+export BASE_IMAGE="quay.io/rockylinux/rockylinux:10.0.20250606-ubi"
 export HADOLINT_VERSION="2.12.0"
 export CLOUDSMITH_CLI_VERSION="1.4.1"
 export FPM_VERSION="1.15.1"
-export RRDTOOL_VERSION="1.7.*"
+export RRDTOOL_VERSION="1.8.*"
