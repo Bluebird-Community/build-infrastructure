@@ -15,7 +15,7 @@ jobs:
         openjdk: [ 8, 11, 17, 21 ]
     runs-on: ubuntu-latest
     container:
-      image: quay.io/bluebird/base-builder:ubuntu.0.1.7.b18
+      image: quay.io/${{ github.repository_owner }}/base-builder:ubuntu.0.1.7.b18
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU
@@ -65,4 +65,4 @@ jobs:
           context: ./oci/java-builder/${{ matrix.distro }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/bluebird/java-builder:${{ matrix.distro }}.0.1.5.jdk-${{ matrix.openjdk }}.b${{ github.run_number }}
+          tags: quay.io/${{ github.repository_owner }}/java-builder:${{ matrix.distro }}.0.1.5.jdk-${{ matrix.openjdk }}.b${{ github.run_number }}
