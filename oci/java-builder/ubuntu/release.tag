@@ -1,1 +1,1 @@
-java-builder:ubuntu.0.1.6
+java-builder:ubuntu.0.2.0

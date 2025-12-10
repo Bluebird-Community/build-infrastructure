@@ -11,9 +11,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -fsSL "https://rpm.nodesource.com/setup_${NODEJS_MAJOR_VERSION}.x" | bash - && \
     dnf -y install nodejs-${NODEJS_MAJOR_VERSION}.* \
                    java-${SET_OPENJDK_MAJOR}-devel && \
-    npm install --global "yarn@${YARN_VERSION}" && \
     npm install --global "pnpm@${PNPM_VERSION}" && \
-    yarn global add "node-gyp@${NODE_GYP_VERSION}" && \
     curl "https://dlcdn.apache.org/maven/maven-${MAVEN_MAIN_VERSION}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz" -o /tmp/maven.tar.gz && \
     mkdir /opt/maven && \
     tar xzf /tmp/maven.tar.gz --strip-components=1 -C /opt/maven && \
