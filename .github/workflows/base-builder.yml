@@ -14,9 +14,9 @@ jobs:
         distro: [ ubuntu, rocky ]
     runs-on: ubuntu-latest
     container:
-      image: quay.io/${{ github.repository_owner }}/base-builder:ubuntu.0.1.9.b21
+      image: quay.io/bluebird/base-builder:ubuntu.0.1.9.b21
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -28,7 +28,7 @@ jobs:
       ## Any other branch just build locally, no docker push
       - name: Build container image
         if: github.ref != 'refs/heads/main'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./oci/base-builder/${{ matrix.distro }}
           # only single arch on branches, because of
@@ -43,7 +43,7 @@ jobs:
         run: docker image save base-builder:${{ matrix.distro }}.b${{ github.run_number }} -o build/base-builder-${{ matrix.distro }}.oci
       - name: Persist OCI
         if: github.ref != 'refs/heads/main'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: base-builder-oci-${{ matrix.distro }}
           path: |
@@ -59,9 +59,9 @@ jobs:
           password: ${{ secrets.QUAY_PASSWORD }}
       - name: Build and push container image
         if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./oci/base-builder/${{ matrix.distro }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/${{ github.repository_owner }}/base-builder:${{ matrix.distro }}.0.1.9.b${{ github.run_number }}
+          tags: quay.io/bluebird/base-builder:${{ matrix.distro }}.0.1.9.b${{ github.run_number }}

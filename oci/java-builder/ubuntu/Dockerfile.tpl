@@ -14,8 +14,6 @@ RUN curl -fsSL "https://deb.nodesource.com/setup_${NODEJS_MAJOR_VERSION}.x" | ba
     apt-get -y install --no-install-recommends nodejs="${NODEJS_MAJOR_VERSION}.*" && \
     ln -s /usr/lib/jvm/java-1.${OPENJDK_MAJOR}* /usr/lib/jvm/java-${OPENJDK_MAJOR}-openjdk && \
     npm install --global "pnpm@${PNPM_VERSION}" && \
-    npm install --global "yarn@${YARN_VERSION}" && \
-    yarn global add "node-gyp@${NODE_GYP_VERSION}" && \
     curl "https://dlcdn.apache.org/maven/maven-${MAVEN_MAIN_VERSION}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz" -o /tmp/maven.tar.gz && \
     mkdir /opt/maven && \
     tar xzf /tmp/maven.tar.gz --strip-components=1 -C /opt/maven && \
