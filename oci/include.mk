@@ -42,7 +42,7 @@ deps:
 	@echo -n "👮 Check shellcheck available:               "
 	@command -v shellcheck >/dev/null 2>&1;
 	@echo "$(OK)"
-	@echo -n "👩‍🔧 Create build directory:                   "
+	@echo -n "🔧 Create build directory:                   "
 	@mkdir -p ./build >/dev/null 2>&1;
 	@echo "$(OK)"
 
@@ -64,12 +64,12 @@ lint: deps-hadolint Dockerfile
 
 .PHONY: Dockerfile
 Dockerfile: shellcheck
-	@echo -n "👩‍🔧 Generating Dockerfile:                    "
+	@echo -n "🔧 Generating Dockerfile:                    "
 	@source ./version-lock.sh && envsubst < "Dockerfile.tpl" > "Dockerfile";
 	@echo "$(OK)"
 
 .PHONY: oci
-oci: Dockerfile lint
+oci:   lint
 	@echo -n "📦 Build container image:                    "
 	@docker build --platform="$(BUILD_ARCH)" --tag $(RELEASE_TAG) . 2>>$(BUILD_LOG) 1>/dev/null;
 	@echo "$(OK)"
