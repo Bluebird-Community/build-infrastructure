@@ -11,10 +11,10 @@ jobs:
   base-builder:
     strategy:
       matrix:
-        distro: [ ubuntu, rocky ]
+        distro: [ ubuntu-25.10, rocky-10.1 ]
     runs-on: ubuntu-latest
     container:
-      image: quay.io/bluebird/base-builder:ubuntu.0.1.9.b21
+      image: quay.io/bluebird/base-builder:ubuntu.0.2.1.b23
     steps:
       - uses: actions/checkout@v6
       - name: Set up QEMU
@@ -25,7 +25,7 @@ jobs:
         working-directory: oci/base-builder/${{ matrix.distro }}
         run: make Dockerfile
 
-      ## Any other branch just build locally, no docker push
+      ## Any other branch just builds locally, no docker push
       - name: Build container image
         if: github.ref != 'refs/heads/main'
         uses: docker/build-push-action@v6
@@ -64,4 +64,4 @@ jobs:
           context: ./oci/base-builder/${{ matrix.distro }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/bluebird/base-builder:${{ matrix.distro }}.0.2.1.b${{ github.run_number }}
+          tags: quay.io/bluebird/base-builder:${{ matrix.distro }}-0.1.b${{ github.run_number }}
