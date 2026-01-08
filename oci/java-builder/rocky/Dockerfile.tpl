@@ -16,16 +16,16 @@ RUN curl -fsSL "https://rpm.nodesource.com/setup_${NODEJS_MAJOR_VERSION}.x" | ba
     tar xzf /tmp/maven.tar.gz --strip-components=1 -C /opt/maven && \
     dnf clean all
 
-RUN install -d /usr/lib/jvm/java-17-openjdk && \
+RUN install -d ${JAVA_HOME} && \
     if [ "$(uname -m)" = "x86_64" ]; then \
-      curl -L "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.17%2B10/OpenJDK17U-jdk_x64_linux_hotspot_17.0.17_10.tar.gz" | tar xvz --strip-components=1 -C /usr/lib/jvm/java-17-openjdk; \
-      curl -L "https://github.com/hadolint/hadolint/releases/download/v/hadolint-Linux-x86_64" --output /usr/local/bin/hadolint; \
+      curl -L "${JAVA_JDK_BASE_URL}/${JAVA_VERSION_DIR}/OpenJDK${JAVA_MAJOR_VERSION}U-jdk_x64_linux_hotspot_${JAVA_VERSION}.tar.gz" | tar xvz --strip-components=1 -C ${JAVA_HOME}; \
+      curl -L "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-x86_64" --output /usr/local/bin/hadolint; \
     elif [ "$(uname -m)" = "aarch64" ]; then \
-      curl -L "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.17%2B10/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.17_10.tar.gz" | tar xvz --strip-components=1 -C /usr/lib/jvm/java-17-openjdk; \
-      curl -L "https://github.com/hadolint/hadolint/releases/download/v/hadolint-Linux-arm64" --output /usr/local/bin/hadolint; \
+      curl -L "${JAVA_JDK_BASE_URL}/${JAVA_VERSION_DIR}/OpenJDK${JAVA_MAJOR_VERSION}U-jdk_aarch64_linux_hotspot_${JAVA_VERSION}.tar.gz" | tar xvz --strip-components=1 -C ${JAVA_HOME}; \
+      curl -L "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-arm64" --output /usr/local/bin/hadolint; \
     elif [ "$(uname -m)" = "arm64" ]; then \
-      curl -L "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.17%2B10/OpenJDK17U-jdk_arm_linux_hotspot_17.0.17_10.tar.gz" | tar xvz --strip-components=1 -C /usr/lib/jvm/java-17-openjdk; \
-      curl -L "https://github.com/hadolint/hadolint/releases/download/v/hadolint-Linux-arm64" --output /usr/local/bin/hadolint; \
+      curl -L "${JAVA_JDK_BASE_URL}/${JAVA_VERSION_DIR}/OpenJDK${JAVA_MAJOR_VERSION}U-jdk_aarch64_linux_hotspot_${JAVA_VERSION}.tar.gz" | tar xvz --strip-components=1 -C ${JAVA_HOME}; \
+      curl -L "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-arm64" --output /usr/local/bin/hadolint; \
     else \
       echo "Unsupported architecture. Only x86_64, aarch64, arm64 supported." \
       exit 1; \
@@ -33,9 +33,9 @@ RUN install -d /usr/lib/jvm/java-17-openjdk && \
     chmod +x /usr/local/bin/hadolint
 
 ### Runtime information and not relevant at build time
-ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/maven/bin
+ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/maven/bin:${JAVA_HOME}/bin
 ENV M2_HOME=/opt/maven
-ENV JAVA_HOME=/usr/lib/jvm/java-${SET_OPENJDK_MAJOR}-openjdk
+ENV JAVA_HOME="${JAVA_HOME}"
 
 ENTRYPOINT ["/bin/bash"]
 

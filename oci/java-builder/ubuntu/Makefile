@@ -1,2 +1,2 @@
-export OPENJDK_MAJOR := 17
+export JAVA_MAJOR_VERSION=17
 include ../../include.mk

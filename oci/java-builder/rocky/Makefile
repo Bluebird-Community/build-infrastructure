@@ -1,4 +1,2 @@
-export OPENJDK_MAJOR := 17
-export SET_OPENJDK_MAJOR := $(subst 8,1.8.0,$(OPENJDK_MAJOR))
-
+export JAVA_MAJOR_VERSION=17
 include ../../include.mk

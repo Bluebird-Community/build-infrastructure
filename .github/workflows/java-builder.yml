@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         distro: [ ubuntu, rocky ]
-        openjdk: [ 8, 11, 17, 21 ]
+        temurin-jdk: [ 8, 11, 17, 21 ]
     runs-on: ubuntu-latest
     container:
       image: quay.io/bluebird/base-builder:ubuntu-25.10-0.1.b26
@@ -24,7 +24,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Create Dockerfile
         working-directory: oci/java-builder/${{ matrix.distro }}
-        run: make Dockerfile OPENJDK_MAJOR=${{ matrix.openjdk }}
+        run: make Dockerfile JAVA_MAJOR_VERSION=${{ matrix.temurin-jdk }}
 
       ## Any other branch just build locally, no docker push
       - name: Build container image
@@ -37,16 +37,16 @@ jobs:
           platforms: linux/amd64
           push: false
           load: true
-          tags: java-builder:${{ matrix.distro }}.jdk-${{ matrix.openjdk }}.b${{ github.run_number }}
+          tags: java-builder:${{ matrix.distro }}.jdk-${{ matrix.temurin-jdk }}.b${{ github.run_number }}
       - name: Save image as artifact
         if: github.ref != 'refs/heads/main'
         working-directory: oci/java-builder/${{ matrix.distro }}
-        run: docker image save java-builder:${{ matrix.distro }}.jdk-${{ matrix.openjdk }}.b${{ github.run_number }} -o build/java-builder-${{ matrix.distro }}.oci
+        run: docker image save java-builder:${{ matrix.distro }}.jdk-${{ matrix.temurin-jdk }}.b${{ github.run_number }} -o build/java-builder-${{ matrix.distro }}.oci
       - name: Persist OCI
         if: github.ref != 'refs/heads/main'
         uses: actions/upload-artifact@v5
         with:
-          name: java-builder-oci-${{ matrix.distro }}.jdk-${{ matrix.openjdk }}
+          name: java-builder-oci-${{ matrix.distro }}.jdk-${{ matrix.temurin-jdk }}
           path: |
             oci/java-builder/${{ matrix.distro }}/build/*.oci
 
@@ -65,4 +65,4 @@ jobs:
           context: ./oci/java-builder/${{ matrix.distro }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/bluebird/java-builder:${{ matrix.distro }}.0.2.1.jdk-${{ matrix.openjdk }}.b${{ github.run_number }}
+          tags: quay.io/bluebird/java-builder:${{ matrix.distro }}.0.3.0.jdk-${{ matrix.temurin-jdk }}.b${{ github.run_number }}
