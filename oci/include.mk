@@ -62,7 +62,6 @@ lint: deps-hadolint Dockerfile
 	@find . -type f -name 'Dockerfile' | xargs hadolint	2>>$(BUILD_LOG) 1>/dev/null;
 	@echo "$(OK)"
 
-.PHONY: Dockerfile
 Dockerfile: shellcheck
 	@echo -n "🔧 Generating Dockerfile:                    "
 	@source ./version-lock.sh && envsubst < "Dockerfile.tpl" > "Dockerfile";
