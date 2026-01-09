@@ -28,7 +28,7 @@ RUN git submodule update --init --recursive --depth 1 && \
 FROM ${JDK17_BUILDER_IMAGE} AS jdk17-builder
 
 RUN git config --global advice.detachedHead false && \
-    git clone --depth 1 --branch "${JRRD2_VERSION}" "${JRRD2_GIT_REPO_URL}" /usr/src/jrrd2
+    git clone --depth 1 --branch "v${JRRD2_VERSION}" "${JRRD2_GIT_REPO_URL}" /usr/src/jrrd2
 
 WORKDIR /usr/src/jrrd2
 
@@ -46,13 +46,10 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3040,DL3041
 RUN microdnf -y install \
         iputils \
-        ${JAVA_PKG} \
         openssh-clients \
         ncurses \
         rrdtool-${RRDTOOL_VERSION} \
         rsync \
-        tar \
-        tzdata \
         uuid && \
    microdnf clean all
 
@@ -60,10 +57,11 @@ RUN microdnf -y install \
 # hadolint ignore=DL3003
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
       curl -L "${CONFD_BASE_URL}/confd-${CONFD_VERSION}-linux-amd64.tar.gz" | tar xvz -C /usr/bin; \
-    elif [ "$(uname -m)" = "armv7l" ]; then \
-      curl -L "${CONFD_BASE_URL}/confd-${CONFD_VERSION}-linux-arm7.tar.gz" | tar xvz -C /usr/bin; \
-    else \
+    elif [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then \
       curl -L "${CONFD_BASE_URL}/confd-${CONFD_VERSION}-linux-arm64.tar.gz" | tar xvz -C /usr/bin; \
+    else \
+      echo "Unsupported architecture. Only x86_64, aarch64, arm64 supported." >&2; \
+      exit 1; \
     fi
 
 RUN mkdir -p /opt/prom-jmx-exporter
@@ -89,21 +87,21 @@ RUN curl -L "${PYROSCOPE_URL}" --output ./pyroscope.jar && \
     chmod 0664 /opt/pyroscope/*
 
 # Install JICMP
-RUN mkdir -p /usr/lib/jni
-COPY --from=jdk8-builder /usr/src/jicmp/.libs/libjicmp.la /usr/lib/jni/
-COPY --from=jdk8-builder /usr/src/jicmp/.libs/libjicmp.so /usr/lib/jni/
-COPY --from=jdk8-builder /usr/src/jicmp/jicmp.jar /usr/share/java
+COPY --from=jdk8-builder /usr/src/jicmp/.libs/libjicmp.la /usr/java/packages/lib/libjicmp.la
+COPY --from=jdk8-builder /usr/src/jicmp/.libs/libjicmp.so /usr/java/packages/lib/libjicmp.so
+COPY --from=jdk8-builder /usr/src/jicmp/jicmp.jar /usr/share/java/jicmp.jar
 
 # Install JICMP6
-COPY --from=jdk8-builder /usr/src/jicmp6/.libs/libjicmp6.la /usr/lib/jni/
-COPY --from=jdk8-builder /usr/src/jicmp6/.libs/libjicmp6.so /usr/lib/jni/
-COPY --from=jdk8-builder /usr/src/jicmp6/jicmp6.jar /usr/share/java
+COPY --from=jdk8-builder /usr/src/jicmp6/.libs/libjicmp6.la /usr/java/packages/lib/libjicmp6.la
+COPY --from=jdk8-builder /usr/src/jicmp6/.libs/libjicmp6.so /usr/java/packages/lib/libjicmp6.so
+COPY --from=jdk8-builder /usr/src/jicmp6/jicmp6.jar /usr/share/java/jicmp6.jar
 
 # Install JRRD2
-COPY --from=jdk17-builder /usr/src/jrrd2/dist/jrrd2-api-*.jar /usr/share/java/jrrd2.jar
-COPY --from=jdk17-builder /usr/src/jrrd2/dist/libjrrd2.so /usr/lib64/libjrrd2.so
+COPY --from=jdk17-builder /usr/src/jrrd2/dist/libjrrd2.so /usr/java/packages/lib/libjrrd2.so
+COPY --from=jdk17-builder /usr/src/jrrd2/dist/jrrd2-api-${JRRD2_VERSION}.jar /usr/share/java/jrrd2.jar
 
-ENV JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
+ENV JAVA_HOME="${JAVA_HOME}"
+ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/maven/bin:${JAVA_HOME}/bin"
 
 LABEL org.opencontainers.image.created="${BUILD_DATE}" \
       org.opencontainers.image.title="Bluebird deploy image based on ${BASE_IMAGE}" \

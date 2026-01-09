@@ -23,16 +23,13 @@ RUN curl "https://dlcdn.apache.org/maven/maven-${MAVEN_MAIN_VERSION}/${MAVEN_VER
 
 RUN install -d ${JAVA_HOME} && \
     if [ "$(uname -m)" = "x86_64" ]; then \
-      curl -L "${JAVA_JDK_BASE_URL}/${JAVA_VERSION_DIR}/OpenJDK${JAVA_MAJOR_VERSION}U-jdk_x64_linux_hotspot_${JAVA_VERSION}.tar.gz" | tar xvz --strip-components=1 -C ${JAVA_HOME}; \
+      curl -L "${JAVA_JDK_BASE_URL}/${JAVA_VERSION_DIR}/OpenJDK${JAVA_MAJOR_VERSION}U-jdk_x64_linux_hotspot_${JAVA_VERSION}.tar.gz" | tar xvz --strip-components=1 -C ${JAVA_HOME} && \
       curl -L "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-x86_64" --output /usr/local/bin/hadolint; \
-    elif [ "$(uname -m)" = "aarch64" ]; then \
-      curl -L "${JAVA_JDK_BASE_URL}/${JAVA_VERSION_DIR}/OpenJDK${JAVA_MAJOR_VERSION}U-jdk_aarch64_linux_hotspot_${JAVA_VERSION}.tar.gz" | tar xvz --strip-components=1 -C ${JAVA_HOME}; \
-      curl -L "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-arm64" --output /usr/local/bin/hadolint; \
-    elif [ "$(uname -m)" = "arm64" ]; then \
-      curl -L "${JAVA_JDK_BASE_URL}/${JAVA_VERSION_DIR}/OpenJDK${JAVA_MAJOR_VERSION}U-jdk_aarch64_linux_hotspot_${JAVA_VERSION}.tar.gz" | tar xvz --strip-components=1 -C ${JAVA_HOME}; \
+    elif [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then \
+      curl -L "${JAVA_JDK_BASE_URL}/${JAVA_VERSION_DIR}/OpenJDK${JAVA_MAJOR_VERSION}U-jdk_aarch64_linux_hotspot_${JAVA_VERSION}.tar.gz" | tar xvz --strip-components=1 -C ${JAVA_HOME} && \
       curl -L "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-arm64" --output /usr/local/bin/hadolint; \
     else \
-      echo "Unsupported architecture. Only x86_64, aarch64, arm64 supported." \
+      echo "Unsupported architecture. Only x86_64, aarch64, arm64 supported." >&2; \
       exit 1; \
     fi && \
     chmod +x /usr/local/bin/hadolint

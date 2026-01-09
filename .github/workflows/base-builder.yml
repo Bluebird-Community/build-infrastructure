@@ -13,8 +13,6 @@ jobs:
       matrix:
         distro: [ ubuntu-25.10, rocky-10.1 ]
     runs-on: ubuntu-latest
-    container:
-      image: quay.io/bluebird/base-builder:ubuntu-25.10-0.1.b26
     steps:
       - uses: actions/checkout@v6
       - name: Set up QEMU
