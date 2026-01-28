@@ -1,10 +1,15 @@
 ###
-# Stage building JICMP and JICMP6 using OpenJDK 8
+# Stage building JNI dependencies
 ###
-FROM ${JDK8_BUILDER_IMAGE} AS jdk8-builder
 
-RUN git config --global advice.detachedHead false && \
-    git clone --depth 1 --branch "${JICMP_VERSION}" "${JICMP_GIT_REPO_URL}" /usr/src/jicmp
+FROM ${JDK17_BUILDER_IMAGE} AS jni-builder
+
+RUN git config --global advice.detachedHead false
+
+# Checkout and build JICMP
+# hadolint: We can ignore Multiple consecutive `RUN` instructions in the builder stage.
+# hadolint ignore=DL3059
+RUN git clone --depth 1 --branch "${JICMP_VERSION}" "${JICMP_GIT_REPO_URL}" /usr/src/jicmp
 
 WORKDIR /usr/src/jicmp
 
@@ -17,18 +22,14 @@ RUN git submodule update --init --recursive --depth 1 && \
 RUN git clone --depth 1 --branch "${JICMP6_VERSION}" "${JICMP6_GIT_REPO_URL}" /usr/src/jicmp6
 
 WORKDIR /usr/src/jicmp6
+
 RUN git submodule update --init --recursive --depth 1 && \
     autoreconf -fvi && \
     ./configure && \
     make -j1
 
-###
-# Stage building JRRD2 using OpenJDK 17
-###
-FROM ${JDK17_BUILDER_IMAGE} AS jdk17-builder
-
-RUN git config --global advice.detachedHead false && \
-    git clone --depth 1 --branch "v${JRRD2_VERSION}" "${JRRD2_GIT_REPO_URL}" /usr/src/jrrd2
+# Checkout and build JRRD2
+RUN git clone --depth 1 --branch "v${JRRD2_VERSION}" "${JRRD2_GIT_REPO_URL}" /usr/src/jrrd2
 
 WORKDIR /usr/src/jrrd2
 
@@ -87,18 +88,18 @@ RUN curl -L "${PYROSCOPE_URL}" --output ./pyroscope.jar && \
     chmod 0664 /opt/pyroscope/*
 
 # Install JICMP
-COPY --from=jdk8-builder /usr/src/jicmp/.libs/libjicmp.la /usr/java/packages/lib/libjicmp.la
-COPY --from=jdk8-builder /usr/src/jicmp/.libs/libjicmp.so /usr/java/packages/lib/libjicmp.so
-COPY --from=jdk8-builder /usr/src/jicmp/jicmp.jar /usr/share/java/jicmp.jar
+COPY --from=jni-builder /usr/src/jicmp/.libs/libjicmp.la /usr/java/packages/lib/libjicmp.la
+COPY --from=jni-builder /usr/src/jicmp/.libs/libjicmp.so /usr/java/packages/lib/libjicmp.so
+COPY --from=jni-builder /usr/src/jicmp/jicmp.jar /usr/share/java/jicmp.jar
 
 # Install JICMP6
-COPY --from=jdk8-builder /usr/src/jicmp6/.libs/libjicmp6.la /usr/java/packages/lib/libjicmp6.la
-COPY --from=jdk8-builder /usr/src/jicmp6/.libs/libjicmp6.so /usr/java/packages/lib/libjicmp6.so
-COPY --from=jdk8-builder /usr/src/jicmp6/jicmp6.jar /usr/share/java/jicmp6.jar
+COPY --from=jni-builder /usr/src/jicmp6/.libs/libjicmp6.la /usr/java/packages/lib/libjicmp6.la
+COPY --from=jni-builder /usr/src/jicmp6/.libs/libjicmp6.so /usr/java/packages/lib/libjicmp6.so
+COPY --from=jni-builder /usr/src/jicmp6/jicmp6.jar /usr/share/java/jicmp6.jar
 
 # Install JRRD2
-COPY --from=jdk17-builder /usr/src/jrrd2/dist/libjrrd2.so /usr/java/packages/lib/libjrrd2.so
-COPY --from=jdk17-builder /usr/src/jrrd2/dist/jrrd2-api-${JRRD2_VERSION}.jar /usr/share/java/jrrd2.jar
+COPY --from=jni-builder /usr/src/jrrd2/dist/libjrrd2.so /usr/java/packages/lib/libjrrd2.so
+COPY --from=jni-builder /usr/src/jrrd2/dist/jrrd2-api-${JRRD2_VERSION}.jar /usr/share/java/jrrd2.jar
 
 ENV JAVA_HOME="${JAVA_HOME}"
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/maven/bin:${JAVA_HOME}/bin"

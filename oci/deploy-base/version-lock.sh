@@ -7,13 +7,12 @@ DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 export VCS_SOURCE
 export VCS_REVISION
 export DATE
-export JDK8_BUILDER_IMAGE="quay.io/bluebird/java-builder:rocky.0.3.0.jdk-8.b31"
 export JDK17_BUILDER_IMAGE="quay.io/bluebird/java-builder:rocky.0.3.0.jdk-17.b31"
 export BASE_IMAGE="eclipse-temurin:17.0.17_10-jdk-ubi10-minimal"
 export JICMP_GIT_REPO_URL="https://github.com/Bluebird-Community/jicmp.git"
-export JICMP_VERSION="v3.0.7"
+export JICMP_VERSION="v4.0.0"
 export JICMP6_GIT_REPO_URL="https://github.com/Bluebird-Community/jicmp6.git"
-export JICMP6_VERSION="v3.0.7"
+export JICMP6_VERSION="v4.0.0"
 export JRRD2_GIT_REPO_URL="https://github.com/Bluebird-Community/jrrd2.git"
 export JRRD2_VERSION="2.2.0"
 export RRDTOOL_VERSION="1.8.*"
