@@ -8,7 +8,7 @@ export VCS_SOURCE
 export VCS_REVISION
 export DATE
 export JDK17_BUILDER_IMAGE="quay.io/bluebird/java-builder:rocky.0.3.0.jdk-17.b31"
-export BASE_IMAGE="eclipse-temurin:17.0.17_10-jdk-ubi10-minimal"
+export BASE_IMAGE="eclipse-temurin:21.0.9_10-jdk-ubi10-minimal"
 export JICMP_GIT_REPO_URL="https://github.com/Bluebird-Community/jicmp.git"
 export JICMP_VERSION="v4.0.0"
 export JICMP6_GIT_REPO_URL="https://github.com/Bluebird-Community/jicmp6.git"

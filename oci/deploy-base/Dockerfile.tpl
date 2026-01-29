@@ -90,12 +90,10 @@ RUN curl -L "${PYROSCOPE_URL}" --output ./pyroscope.jar && \
 # Install JICMP
 COPY --from=jni-builder /usr/src/jicmp/.libs/libjicmp.la /usr/java/packages/lib/libjicmp.la
 COPY --from=jni-builder /usr/src/jicmp/.libs/libjicmp.so /usr/java/packages/lib/libjicmp.so
-COPY --from=jni-builder /usr/src/jicmp/jicmp.jar /usr/share/java/jicmp.jar
 
 # Install JICMP6
 COPY --from=jni-builder /usr/src/jicmp6/.libs/libjicmp6.la /usr/java/packages/lib/libjicmp6.la
 COPY --from=jni-builder /usr/src/jicmp6/.libs/libjicmp6.so /usr/java/packages/lib/libjicmp6.so
-COPY --from=jni-builder /usr/src/jicmp6/jicmp6.jar /usr/share/java/jicmp6.jar
 
 # Install JRRD2
 COPY --from=jni-builder /usr/src/jrrd2/dist/libjrrd2.so /usr/java/packages/lib/libjrrd2.so
