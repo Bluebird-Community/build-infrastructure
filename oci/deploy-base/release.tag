@@ -1,1 +1,1 @@
-deploy-base:5.0.0
+deploy-base:6.0.0

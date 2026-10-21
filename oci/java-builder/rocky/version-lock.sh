@@ -40,9 +40,15 @@ case "${JAVA_MAJOR_VERSION}" in
     export JAVA_VERSION_DIR="jdk-${JAVA_MAJOR_VERSION}.${JAVA_MINOR_VERSION}%2B${JAVA_BUILD_VERSION}"
     export JAVA_VERSION="${JAVA_MAJOR_VERSION}.${JAVA_MINOR_VERSION}_${JAVA_BUILD_VERSION}"
     ;;
+"25")
+    export JAVA_MINOR_VERSION="0.4.1"
+    export JAVA_BUILD_VERSION="1"
+    export JAVA_VERSION_DIR="jdk-${JAVA_MAJOR_VERSION}.${JAVA_MINOR_VERSION}%2B${JAVA_BUILD_VERSION}"
+    export JAVA_VERSION="${JAVA_MAJOR_VERSION}.${JAVA_MINOR_VERSION}_${JAVA_BUILD_VERSION}"
+    ;;
 *)
     echo "Unsupported Java major version ${JAVA_MAJOR_VERSION}."
-    echo "Supported JDK versions: 8, 11, 17, 21"
+    echo "Supported JDK versions: 8, 11, 17, 21, 25"
     exit 1
     ;;
 esac
