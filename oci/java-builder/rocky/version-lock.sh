@@ -9,7 +9,7 @@ export VCS_REVISION
 export DATE
 export BASE_IMAGE="quay.io/bluebird/base-builder:rocky-10.1-0.1.b26"
 export MAVEN_MAIN_VERSION="3"
-export MAVEN_MINOR_VERSION="8.9"
+export MAVEN_MINOR_VERSION="9.16"
 export MAVEN_VERSION="${MAVEN_MAIN_VERSION}.${MAVEN_MINOR_VERSION}"
 export NODEJS_MAJOR_VERSION="24"
 export PNPM_VERSION="latest-10"
