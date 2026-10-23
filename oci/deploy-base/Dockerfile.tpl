@@ -2,7 +2,7 @@
 # Stage building JNI dependencies
 ###
 
-FROM ${JDK17_BUILDER_IMAGE} AS jni-builder
+FROM ${JDK_BUILDER_IMAGE} AS jni-builder
 
 RUN git config --global advice.detachedHead false
 
