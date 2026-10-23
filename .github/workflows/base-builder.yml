@@ -11,7 +11,7 @@ jobs:
   base-builder:
     strategy:
       matrix:
-        distro: [ ubuntu-25.10, rocky-10.1 ]
+        distro: [ ubuntu-26.04, rocky-10.1 ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
