@@ -8,3 +8,8 @@ Dockerfile
 ansible/host_vars/
 ansible/inventory/
 ansible/ansible.cfg
+
+# AI tools
+.agent/
+.claude/
+openspec/
