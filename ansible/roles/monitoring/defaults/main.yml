@@ -14,6 +14,7 @@ monitoring_snmpd_include_dir: /etc/snmp/conf.d
 monitoring_snmpd_community: public
 monitoring_snmpd_port: 161
 monitoring_snmpd_inform_sink: 127.0.0.1
+monitoring_snmpd_inform_community: "{{ monitoring_snmpd_community }}"
 monitoring_snmpd_syslocation: Sittin in a dock at the bay
 monitoring_snmpd_syscontact: root@localhost
 monitoring_snmpd_extend_dir: /etc/snmp/extend
