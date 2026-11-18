@@ -38,6 +38,7 @@
     state: absent
   loop:
     - /usr/share/keyrings/opennms-stable-archive-keyring.gpg
+    - /usr/share/keyrings/opennms-stable-archive-keyring.gpg~
   when: item != opennms_repo.key_filename | default('')
   tags:
     - opennms
@@ -74,6 +75,7 @@
     state: absent
   loop:
     - /usr/share/keyrings/opennms-common-archive-keyring.gpg
+    - /usr/share/keyrings/opennms-common-archive-keyring.gpg~
   when: item != opennms_common_repo.key_filename | default('')
   tags:
     - opennms
