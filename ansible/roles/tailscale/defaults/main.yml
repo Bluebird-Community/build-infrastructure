@@ -1,0 +1,5 @@
+# Copyright 2026 Ronny Trommer <ronny@no42.org>
+# SPDX-License-Identifier: GPL-3.0-or-later
+---
+tailscale_repo_url: https://pkgs.tailscale.com/stable/ubuntu
+tailscale_key_url: "{{ tailscale_repo_url }}/{{ ansible_distribution_release }}.noarmor.gpg"
