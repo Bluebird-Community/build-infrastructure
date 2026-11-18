@@ -4,6 +4,7 @@
   become: true
   roles:
     - system-settings
+    - tailscale
     - docker-engine
     - prometheus.prometheus.node_exporter
     - monitoring
