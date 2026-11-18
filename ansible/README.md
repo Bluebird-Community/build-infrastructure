@@ -108,7 +108,7 @@ The runner name is the inventory host name.
 ## Decisions
 
 - **deb822 repositories.** Third-party repositories use `ansible.builtin.deb822_repository`. `apt-key` is gone in Ubuntu 26.04, and `.sources` files survive release upgrades better than `.list` files.
-- **Run-time registration token.** The runner role takes a short-lived token on the command line. No GitHub credential is stored in the repository, the inventory or on the host.
+- **Run-time registration token.** The runner role takes a short-lived token on the command line. No registration token or personal access token is stored in the repository, the inventory or on the host. The runner keeps its own credentials in `/opt/actions-runner` after registration.
 - **No re-registration.** The install path runs only when `/opt/actions-runner/.runner` is missing. A registered runner is never reinstalled or renamed. The runner version in the defaults is used for the first install only, because the runner updates itself.
 - **Unit name.** The service keeps the name GitHub's `svc.sh` uses, `actions.runner.<org>.<host>.service`.
 - **JDK.** 17 is the default and 25 is installed beside it. Jobs select 25 through `JAVA_HOME`.
