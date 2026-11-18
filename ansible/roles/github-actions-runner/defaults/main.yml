@@ -11,3 +11,6 @@ gh_runner_version: 2.338.2
 gh_runner_arch: x64
 gh_runner_checksum: "sha256:baebf204307bac6193480852732f0aba2ae97b6c5597c244f4d5558390147c40"
 gh_runner_archive: "actions-runner-linux-{{ gh_runner_arch }}-{{ gh_runner_version }}.tar.gz"
+
+# PATH that config.sh records in .path and every job inherits.
+gh_runner_job_path: "/opt/maven/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
