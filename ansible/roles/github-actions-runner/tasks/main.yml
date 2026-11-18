@@ -1,8 +1,25 @@
 ---
+- name: Check for an existing runner registration
+  ansible.builtin.stat:
+    path: "{{ gh_actions_home }}/.runner"
+  register: gh_runner_registration
+  tags:
+    - github-actions-runner
+
+- name: Install and register the GitHub Actions Runner
+  ansible.builtin.include_tasks:
+    file: install.yml
+    apply:
+      tags:
+        - github-actions-runner
+  when: not gh_runner_registration.stat.exists
+  tags:
+    - github-actions-runner
+
 - name: Install GitHub Actions Runner service unit
   ansible.builtin.template:
     src: systemd/actions.runner.service.j2
-    dest: /etc/systemd/system/actions.runner.service
+    dest: "/etc/systemd/system/{{ gh_runner_service }}"
     mode: "0664"
     owner: root
     group: root
@@ -15,9 +32,9 @@
 - name: Set environment for GitHub Actions Runner
   ansible.builtin.template:
     src: env.j2
-    dest: {{ gh_actions_home }}/.env
+    dest: "{{ gh_actions_home }}/.env"
     mode: "0660"
-    owner: cicd
+    owner: "{{ cicd_user }}"
     group: users
   notify:
     - Restart actions-runner
@@ -27,11 +44,18 @@
 - name: Install Cleanup script for GitHub Actions Runner
   ansible.builtin.template:
     src: cleanup_script.sh.j2
-    dest: {{ gh_actions_home }}/cleanup_script.sh
+    dest: "{{ gh_actions_home }}/cleanup_script.sh"
     mode: "0750"
-    owner: cicd
+    owner: "{{ cicd_user }}"
     group: users
-  notify:
-    - Restart actions-runner
+  tags:
+    - github-actions-runner
+
+- name: Ensure the GitHub Actions Runner is running and enabled
+  ansible.builtin.systemd_service:
+    name: "{{ gh_runner_service }}"
+    state: started
+    enabled: true
+    daemon_reload: true
   tags:
     - github-actions-runner
