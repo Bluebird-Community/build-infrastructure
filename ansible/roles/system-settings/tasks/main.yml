@@ -98,6 +98,16 @@
     state: present
     update_cache: true
 
+- name: Remove CircleCI runner keyring leftovers
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/keyrings/circleci_runner-archive-keyring.gpg
+    - /etc/apt/keyrings/circleci_runner-archive-keyring.gpg~
+  tags:
+    - system
+
 - name: "Create CICD group"
   ansible.builtin.group:
     name: "{{ cicd_group }}"

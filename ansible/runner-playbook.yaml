@@ -4,6 +4,7 @@
   become: true
   roles:
     - system-settings
+    - tailscale
     - docker-engine
     - prometheus.prometheus.node_exporter
     - monitoring
@@ -12,6 +13,7 @@
     - nodejs-builder
     - vm-builder
     - opennms
+    - github-actions-runner
 
 - name: Maven CDN
   hosts: mvn_cdn

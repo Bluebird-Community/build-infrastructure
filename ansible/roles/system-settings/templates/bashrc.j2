@@ -115,6 +115,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-export JAVA_HOME="/usr/lib/jvm/java-{{ openjdk_version }}-openjdk-{{ openjdk_java_arch }}"
+export JAVA_HOME="/usr/lib/jvm/java-{{ openjdk_default_version }}-openjdk-{{ openjdk_java_arch }}"
 export M2_HOME="{{ openjdk_maven_home }}"
 export PATH="${M2_HOME}/bin:${PATH}"

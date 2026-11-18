@@ -1,0 +1,57 @@
+# Copyright 2026 Ronny Trommer <ronny@no42.org>
+# SPDX-License-Identifier: GPL-3.0-or-later
+---
+- name: Install python3-debian for deb822 repositories
+  ansible.builtin.apt:
+    name: python3-debian
+    state: present
+  tags:
+    - tailscale
+    - repository
+
+- name: Remove legacy Tailscale APT source files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/tailscale.list
+    - /etc/apt/sources.list.d/tailscale.list.disabled
+  tags:
+    - tailscale
+    - repository
+
+- name: Install Tailscale APT repository
+  ansible.builtin.deb822_repository:
+    name: tailscale
+    types: deb
+    uris: "{{ tailscale_repo_url }}"
+    suites: "{{ ansible_distribution_release }}"
+    components: main
+    signed_by: "{{ tailscale_key_url }}"
+  register: tailscale_repo
+  tags:
+    - tailscale
+    - repository
+
+- name: Refresh APT cache after Tailscale repository change
+  ansible.builtin.apt:
+    update_cache: true
+  when: tailscale_repo is changed
+  tags:
+    - tailscale
+    - repository
+
+- name: Install Tailscale
+  ansible.builtin.apt:
+    name: tailscale
+    state: present
+  tags:
+    - tailscale
+
+- name: Ensure tailscaled is running and enabled
+  ansible.builtin.service:
+    name: tailscaled
+    state: started
+    enabled: true
+  tags:
+    - tailscale

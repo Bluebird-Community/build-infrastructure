@@ -1,5 +1,6 @@
 ---
 - name: Restart actions-runner
-  ansible.builtin.service:
-    name: actions.runner.service
+  ansible.builtin.systemd_service:
+    name: "{{ gh_runner_service }}"
     state: restarted
+    daemon_reload: true
