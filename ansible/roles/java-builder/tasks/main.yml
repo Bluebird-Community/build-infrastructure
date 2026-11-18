@@ -40,7 +40,7 @@
     owner: root
     group: root
     extra_opts: [--strip-components=1]
-  when: download_result.state == 'file'
+  when: download_result.state | default('') == 'file'
   tags:
     - maven
 
@@ -68,6 +68,7 @@
   ansible.builtin.template:
     src: settings.xml.j2
     dest: /home/cicd/.m2/settings.xml
+    force: false
     mode: "0640"
     owner: cicd
     group: cicd

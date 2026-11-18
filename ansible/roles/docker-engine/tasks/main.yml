@@ -1,17 +1,53 @@
 ---
-- name: Add Docker repository key to a keyring file
-  ansible.builtin.apt_key:
-    url: "{{ docker_repo_key_url }}"
-    keyring: "{{ docker_repo_keyring_file }}"
+- name: Install python3-debian for deb822 repositories
+  ansible.builtin.apt:
+    name: python3-debian
+    state: present
   tags:
     - docker
     - repository
 
-- name: Install Docker repository
-  ansible.builtin.apt_repository:
-    repo: "deb [arch={{ docker_os_arch }} signed-by={{ docker_repo_keyring_file }}] {{ docker_repo_url }} {{ docker_os_version_codename }} {{ docker_release }}"
-    state: present
+- name: Remove legacy Docker APT source files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list
+    - /etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list.disabled
+  tags:
+    - docker
+    - repository
+
+- name: Install Docker APT repository
+  ansible.builtin.deb822_repository:
+    name: docker
+    types: deb
+    uris: "{{ docker_repo_url }}"
+    suites: "{{ ansible_distribution_release }}"
+    components: "{{ docker_release }}"
+    architectures: "{{ docker_os_arch }}"
+    signed_by: "{{ docker_repo_key_url }}"
+  register: docker_repo
+  tags:
+    - docker
+    - repository
+
+- name: Remove legacy Docker key files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/keyrings/docker.gpg
+    - /etc/apt/keyrings/docker.gpg~
+  when: item != docker_repo.key_filename | default('')
+  tags:
+    - docker
+    - repository
+
+- name: Refresh APT cache after Docker repository change
+  ansible.builtin.apt:
     update_cache: true
+  when: docker_repo is changed
   tags:
     - docker
     - repository

@@ -1,17 +1,58 @@
 ---
-- name: Add NodeJS repository key to a keyring file
-  ansible.builtin.apt_key:
-    url: "{{ nodejs_repo_key_url }}"
-    keyring: "{{ nodejs_repo_keyring_file }}"
+- name: Install python3-debian for deb822 repositories
+  ansible.builtin.apt:
+    name: python3-debian
+    state: present
   tags:
     - nodejs
     - repository
 
-- name: Install NodeJS repository
-  ansible.builtin.apt_repository:
-    repo: "deb [signed-by={{ nodejs_repo_keyring_file }}] {{ nodejs_repo_url }} nodistro main"
-    state: present
+- name: Remove legacy NodeSource APT source files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/deb_nodesource_com_node_18_x.list
+    - /etc/apt/sources.list.d/deb_nodesource_com_node_18_x.list.disabled
+    - /etc/apt/sources.list.d/deb_nodesource_com_node_20_x.list
+    - /etc/apt/sources.list.d/deb_nodesource_com_node_20_x.list.disabled
+    - /etc/apt/sources.list.d/deb_nodesource_com_node_22_x.list
+    - /etc/apt/sources.list.d/deb_nodesource_com_node_22_x.list.disabled
+    - /etc/apt/sources.list.d/deb_nodesource_com_node_24_x.list
+    - /etc/apt/sources.list.d/deb_nodesource_com_node_24_x.list.disabled
+  tags:
+    - nodejs
+    - repository
+
+- name: Install NodeSource APT repository
+  ansible.builtin.deb822_repository:
+    name: nodesource
+    types: deb
+    uris: "{{ nodejs_repo_url }}"
+    suites: "nodistro"
+    components: main
+    signed_by: "{{ nodejs_repo_key_url }}"
+  register: nodejs_repo
+  tags:
+    - nodejs
+    - repository
+
+- name: Remove legacy NodeSource key files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/keyrings/nodesource.gpg
+    - /etc/apt/keyrings/nodesource.gpg~
+  when: item != nodejs_repo.key_filename | default('')
+  tags:
+    - nodejs
+    - repository
+
+- name: Refresh APT cache after NodeSource repository change
+  ansible.builtin.apt:
     update_cache: true
+  when: nodejs_repo is changed
   tags:
     - nodejs
     - repository

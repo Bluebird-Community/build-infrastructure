@@ -1,34 +1,90 @@
 ---
-- name: Add OpenNMS key to a keyring file
-  ansible.builtin.apt_key:
-    url: "{{ opennms_key_url }}"
-    keyring: "{{ opennms_key_ring_file }}"
-  tags:
-    - opennms
-    - repository
-
-- name: Add OpenNMS Commons key to a keyring file
-  ansible.builtin.apt_key:
-    url: "{{ opennms_common_key_url }}"
-    keyring: "{{ opennms_common_key_ring_file }}"
-  tags:
-    - opennms
-    - repository
-
-- name: Install OpenNMS APT repository for stable releases
-  ansible.builtin.apt_repository:
-    repo: "deb [arch={{ opennms_os_arch }} signed-by={{ opennms_key_ring_file }}] {{ opennms_repo_url }} {{ ansible_distribution_release }} main"
+- name: Install python3-debian for deb822 repositories
+  ansible.builtin.apt:
+    name: python3-debian
     state: present
-    update_cache: true
   tags:
     - opennms
     - repository
 
-- name: Install OpenNMS APT commons repository
-  ansible.builtin.apt_repository:
-    repo: "deb [arch={{ opennms_os_arch }} signed-by={{ opennms_common_key_ring_file }}] {{ opennms_common_repo_url }} {{ ansible_distribution_release }} main"
-    state: present
+- name: Remove legacy OpenNMS stable APT source files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/packages_opennms_com_public_stable_deb_ubuntu.list
+    - /etc/apt/sources.list.d/packages_opennms_com_public_stable_deb_ubuntu.list.disabled
+  tags:
+    - opennms
+    - repository
+
+- name: Install OpenNMS stable APT repository
+  ansible.builtin.deb822_repository:
+    name: opennms-stable
+    types: deb
+    uris: "{{ opennms_repo_url }}"
+    suites: "{{ ansible_distribution_release }}"
+    components: main
+    architectures: "{{ opennms_os_arch }}"
+    signed_by: "{{ opennms_key_url }}"
+  register: opennms_repo
+  tags:
+    - opennms
+    - repository
+
+- name: Remove legacy OpenNMS stable key files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /usr/share/keyrings/opennms-stable-archive-keyring.gpg
+    - /usr/share/keyrings/opennms-stable-archive-keyring.gpg~
+  when: item != opennms_repo.key_filename | default('')
+  tags:
+    - opennms
+    - repository
+
+- name: Remove legacy OpenNMS common APT source files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/packages_opennms_com_public_common_deb_ubuntu.list
+    - /etc/apt/sources.list.d/packages_opennms_com_public_common_deb_ubuntu.list.disabled
+  tags:
+    - opennms
+    - repository
+
+- name: Install OpenNMS common APT repository
+  ansible.builtin.deb822_repository:
+    name: opennms-common
+    types: deb
+    uris: "{{ opennms_common_repo_url }}"
+    suites: "{{ ansible_distribution_release }}"
+    components: main
+    architectures: "{{ opennms_os_arch }}"
+    signed_by: "{{ opennms_common_key_url }}"
+  register: opennms_common_repo
+  tags:
+    - opennms
+    - repository
+
+- name: Remove legacy OpenNMS common key files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /usr/share/keyrings/opennms-common-archive-keyring.gpg
+    - /usr/share/keyrings/opennms-common-archive-keyring.gpg~
+  when: item != opennms_common_repo.key_filename | default('')
+  tags:
+    - opennms
+    - repository
+
+- name: Refresh APT cache after OpenNMS repository change
+  ansible.builtin.apt:
     update_cache: true
+  when: opennms_repo is changed or opennms_common_repo is changed
   tags:
     - opennms
     - repository
@@ -37,7 +93,7 @@
   ansible.builtin.apt:
     install-recommends: false
     name:
-      - "rrdtool={{ rrdtool_version }}"
+      - rrdtool
       - jicmp
       - jicmp6
       - jrrd2

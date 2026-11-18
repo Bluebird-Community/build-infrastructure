@@ -2,7 +2,6 @@
 system_arch: amd64
 
 trivy_key_url: https://aquasecurity.github.io/trivy-repo/deb/public.key
-trivy_key_ring_file: /etc/apt/keyrings/trivy.gpg
 trivy_repo_url: https://aquasecurity.github.io/trivy-repo/deb
 
 syft_version: 0.103.1
