@@ -4,6 +4,7 @@
     name: vm.swappiness
     value: '5'
     state: present
+    sysctl_file: "{{ system_sysctl_file }}"
     reload: true
 
 - name: Allow user to use JNA icmp sockets
@@ -11,6 +12,7 @@
     name: net.ipv4.ping_group_range
     value: '0 2147483647'
     state: present
+    sysctl_file: "{{ system_sysctl_file }}"
     reload: true
 
 - name: Create directory for custom systemd settings
@@ -107,5 +109,6 @@
     name: "{{ cicd_user }}"
     shell: /bin/bash
     groups: "{{ cicd_group }}"
+    append: true
     state: present
   tags: [ 'cicd' ]

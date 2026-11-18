@@ -6,6 +6,7 @@ system_arch: amd64
 system_os: linux
 system_manage_hosts_file: false
 system_manage_dns: false
+system_sysctl_file: /etc/sysctl.d/90-cicd-runner.conf
 
 dns:
   primary: 193.110.81.0
