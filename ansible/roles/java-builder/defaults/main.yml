@@ -1,8 +1,10 @@
 ---
 system_arch: amd64
 openjdk_java_arch: "{{ system_arch }}"
-openjdk_version: 17
-openjdk_pkg_version: "{{ openjdk_version }}*"
+openjdk_versions:
+  - 17
+  - 25
+openjdk_default_version: 17
 
 openjdk_maven_main_version: 3
 openjdk_maven_version: "{{ openjdk_maven_main_version }}.9.16"

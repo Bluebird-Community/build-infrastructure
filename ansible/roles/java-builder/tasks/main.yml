@@ -1,16 +1,24 @@
 ---
-- name: Installing OpenJDK {{ openjdk_version }}
+- name: Installing OpenJDK {{ openjdk_versions | join(' and ') }}
   ansible.builtin.apt:
-    name: "openjdk-{{ openjdk_version }}-jdk={{ openjdk_pkg_version }}"
+    name: "{{ openjdk_versions | map('regex_replace', '^(.*)$', 'openjdk-\\1-jdk') | list }}"
     state: present
     install_recommends: false
   tags:
     - java
 
-- name: Set java version to OpenJDK {{ openjdk_version }}
+- name: Set java version to OpenJDK {{ openjdk_default_version }}
   community.general.alternatives:
     name: java
-    path: "/usr/lib/jvm/java-{{ openjdk_version }}-openjdk-amd64/bin/java"
+    path: "/usr/lib/jvm/java-{{ openjdk_default_version }}-openjdk-{{ openjdk_java_arch }}/bin/java"
+  tags:
+    - java
+
+- name: Remove OpenJDK 8
+  ansible.builtin.apt:
+    name: "openjdk-8-*"
+    state: absent
+    purge: true
   tags:
     - java
 
