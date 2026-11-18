@@ -1,17 +1,52 @@
 ---
-- name: Add Trivy key to a keyring file
-  ansible.builtin.apt_key:
-    url: "{{ trivy_key_url }}"
-    keyring: "{{ trivy_key_ring_file }}"
+- name: Install python3-debian for deb822 repositories
+  ansible.builtin.apt:
+    name: python3-debian
+    state: present
+  tags:
+    - trivy
+    - repository
+
+- name: Remove legacy Trivy APT source files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/aquasecurity_github_io_trivy_repo_deb.list
+    - /etc/apt/sources.list.d/aquasecurity_github_io_trivy_repo_deb.list.disabled
   tags:
     - trivy
     - repository
 
 - name: Install Trivy APT repository
-  ansible.builtin.apt_repository:
-    repo: "deb [signed-by={{ trivy_key_ring_file }}] {{ trivy_repo_url }} {{ ansible_distribution_release }} main"
-    state: present
+  ansible.builtin.deb822_repository:
+    name: trivy
+    types: deb
+    uris: "{{ trivy_repo_url }}"
+    suites: "{{ ansible_distribution_release }}"
+    components: main
+    signed_by: "{{ trivy_key_url }}"
+  register: trivy_repo
+  tags:
+    - trivy
+    - repository
+
+- name: Remove legacy Trivy key files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/keyrings/trivy.gpg
+    - /etc/apt/keyrings/trivy.gpg~
+  when: item != trivy_repo.key_filename | default('')
+  tags:
+    - trivy
+    - repository
+
+- name: Refresh APT cache after Trivy repository change
+  ansible.builtin.apt:
     update_cache: true
+  when: trivy_repo is changed
   tags:
     - trivy
     - repository
