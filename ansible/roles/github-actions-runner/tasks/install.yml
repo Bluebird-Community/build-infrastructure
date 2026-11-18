@@ -1,0 +1,79 @@
+# Copyright 2026 Ronny Trommer <ronny@no42.org>
+# SPDX-License-Identifier: GPL-3.0-or-later
+---
+- name: Require a registration token for an unregistered host
+  ansible.builtin.assert:
+    that:
+      - gh_runner_token is defined
+      - gh_runner_token | length > 0
+    quiet: true
+    fail_msg: >-
+      Host {{ inventory_hostname }} has no registered runner.
+      Pass -e gh_runner_token=<token>.
+      Create one with:
+      gh api -X POST orgs/{{ gh_org }}/actions/runners/registration-token --jq .token
+
+- name: Create GitHub Actions Runner directory
+  ansible.builtin.file:
+    path: "{{ gh_actions_home }}"
+    state: directory
+    owner: "{{ cicd_user }}"
+    group: users
+    mode: "0755"
+
+- name: Download GitHub Actions Runner {{ gh_runner_version }}
+  ansible.builtin.get_url:
+    url: "https://github.com/actions/runner/releases/download/v{{ gh_runner_version }}/{{ gh_runner_archive }}"
+    dest: "/tmp/{{ gh_runner_archive }}"
+    checksum: "{{ gh_runner_checksum }}"
+    mode: "0644"
+
+- name: Unpack GitHub Actions Runner
+  ansible.builtin.unarchive:
+    src: "/tmp/{{ gh_runner_archive }}"
+    dest: "{{ gh_actions_home }}"
+    remote_src: true
+    owner: "{{ cicd_user }}"
+    group: users
+    creates: "{{ gh_actions_home }}/config.sh"
+
+- name: Remove GitHub Actions Runner archive
+  ansible.builtin.file:
+    path: "/tmp/{{ gh_runner_archive }}"
+    state: absent
+
+- name: Install GitHub Actions Runner dependencies
+  ansible.builtin.command:
+    cmd: "{{ gh_actions_home }}/bin/installdependencies.sh"
+  changed_when: true
+
+- name: Register GitHub Actions Runner
+  become: true
+  become_user: "{{ cicd_user }}"
+  ansible.builtin.command:
+    cmd: >-
+      ./config.sh --unattended
+      --url https://github.com/{{ gh_org }}
+      --token {{ gh_runner_token }}
+      --name {{ inventory_hostname }}
+    chdir: "{{ gh_actions_home }}"
+    creates: "{{ gh_actions_home }}/.runner"
+  no_log: true
+
+- name: Install runsvc.sh as svc.sh would
+  ansible.builtin.copy:
+    src: "{{ gh_actions_home }}/bin/runsvc.sh"
+    dest: "{{ gh_actions_home }}/runsvc.sh"
+    remote_src: true
+    owner: "{{ cicd_user }}"
+    group: users
+    mode: "0755"
+
+- name: Record the service name as svc.sh would
+  ansible.builtin.copy:
+    content: "{{ gh_runner_service }}\n"
+    dest: "{{ gh_actions_home }}/.service"
+    force: false
+    owner: "{{ cicd_user }}"
+    group: users
+    mode: "0644"

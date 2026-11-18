@@ -1,4 +1,21 @@
 ---
+- name: Check for an existing runner registration
+  ansible.builtin.stat:
+    path: "{{ gh_actions_home }}/.runner"
+  register: gh_runner_registration
+  tags:
+    - github-actions-runner
+
+- name: Install and register the GitHub Actions Runner
+  ansible.builtin.include_tasks:
+    file: install.yml
+    apply:
+      tags:
+        - github-actions-runner
+  when: not gh_runner_registration.stat.exists
+  tags:
+    - github-actions-runner
+
 - name: Install GitHub Actions Runner service unit
   ansible.builtin.template:
     src: systemd/actions.runner.service.j2

@@ -4,3 +4,10 @@ gh_actions_runner_working_directory: "{{ gh_actions_home }}"
 gh_org: Bluebird-Community
 gh_runner_service: "actions.runner.{{ gh_org }}.{{ inventory_hostname }}.service"
 cicd_user: cicd
+
+# Used for the first install only. The runner updates itself afterwards.
+# The checksum is published in the release notes of actions/runner.
+gh_runner_version: 2.338.2
+gh_runner_arch: x64
+gh_runner_checksum: "sha256:baebf204307bac6193480852732f0aba2ae97b6c5597c244f4d5558390147c40"
+gh_runner_archive: "actions-runner-linux-{{ gh_runner_arch }}-{{ gh_runner_version }}.tar.gz"
