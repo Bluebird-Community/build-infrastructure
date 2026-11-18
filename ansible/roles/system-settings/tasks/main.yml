@@ -54,6 +54,7 @@
     mode: "0644"
     owner: root
     group: root
+  when: system_manage_hosts_file | bool
   tags:
     - system
 
@@ -66,6 +67,7 @@
     group: root
   notify:
     - Restart systemd-resolved
+  when: system_manage_dns | bool
   tags:
     - system
 

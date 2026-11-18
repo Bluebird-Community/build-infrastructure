@@ -4,6 +4,8 @@ timezone: UTC
 system_filelimit: 1048576
 system_arch: amd64
 system_os: linux
+system_manage_hosts_file: false
+system_manage_dns: false
 
 dns:
   primary: 193.110.81.0
