@@ -100,6 +100,10 @@ A restart ends a running job.
 
 The runner name is the inventory host name.
 
+The install path of the runner role has not run on a real host yet.
+cicd-02 and cicd-03 were registered before the role managed the runner, so only the path for a registered runner is proven.
+Expect to fix small things the first time you add a runner.
+
 ## Manual steps
 
 - **Tailscale login.** The role installs Tailscale and does not log in.
