@@ -4,14 +4,14 @@ system_arch: amd64
 trivy_key_url: https://aquasecurity.github.io/trivy-repo/deb/public.key
 trivy_repo_url: https://aquasecurity.github.io/trivy-repo/deb
 
-syft_version: 0.103.1
+syft_version: 1.57.2
 syft_os: "linux_{{ system_arch }}"
 syft_url: https://github.com/anchore/syft/releases/download/v{{ syft_version }}/syft_{{ syft_version }}_{{ syft_os }}.tar.gz
 
-dive_version: 0.12.0
+dive_version: 0.13.1
 
-hadolint_version: 2.12.0
+hadolint_version: 2.15.1
 hadolint_arch: x86_64
-hadolint_os: Linux
+hadolint_os: linux
 hadolint_url: "https://github.com/hadolint/hadolint/releases/download/v{{ hadolint_version }}/hadolint-{{ hadolint_os }}-{{ hadolint_arch }}"
-hadolint_checksum: "sha256:https://github.com/hadolint/hadolint/releases/download/v{{ hadolint_version }}/hadolint-{{ hadolint_os }}-{{ hadolint_arch }}.sha256"
+hadolint_checksum: "sha256:https://github.com/hadolint/hadolint/releases/download/v{{ hadolint_version }}/checksums.sha256"
